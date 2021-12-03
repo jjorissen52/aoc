@@ -36,5 +36,7 @@ module.exports = {
       '@typescript-eslint/naming-convention': 'off',
       '@typescript-eslint/no-unused-expressions': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
+      '@typescript-eslint/no-shadow': 'off',
+      '@typescript-eslint/lines-between-class-members': 'off'
     },
   };

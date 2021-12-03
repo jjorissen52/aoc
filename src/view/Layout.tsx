@@ -1,19 +1,18 @@
 import React from "react";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Box, { BoxProps } from "@mui/material/Box";
 import Grid, { GridProps } from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
+import Slider from "@mui/material/Slider";
 import Autocomplete from "@mui/material/Autocomplete";
-
-import { CodeRunner } from "../code/container";
-import { SonarRunner } from "../code/sonar";
-import { SlidingSonarRunner } from "../code/sliding_sonar";
-
-import raw from "raw.macro";
 
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+
+import { runners, RunnerOption } from "../code";
+import { useLocalStorage } from "./hooks";
 
 export const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -21,6 +20,17 @@ export const Item = styled(Paper)(({ theme }) => ({
   margin: theme.spacing(3),
   color: theme.palette.text.secondary,
 }));
+
+export const Heading: React.FunctionComponent<BoxProps> = ({
+  children,
+  ...props
+}) => {
+  return (
+    <Box {...props}>
+      <Typography variant={"h3"}>{children}</Typography>
+    </Box>
+  );
+};
 
 export const Column: React.FunctionComponent<GridProps> = ({
   xs = 6,
@@ -33,55 +43,104 @@ export const Column: React.FunctionComponent<GridProps> = ({
   </Grid>
 );
 
-type RunnerOption = {
-  title: string;
-  content: string;
-  runner: CodeRunner;
-};
-
-const runners: RunnerOption[] = [
-  { title: "Sonar", runner: SonarRunner, content: raw("../code/sonar.ts") },
-  {
-    title: "Sliding Sonar",
-    runner: SlidingSonarRunner,
-    content: raw("../code/sliding_sonar.ts"),
-  },
-];
-
 export type IOProps = {
-  onSelectRunner?: (value: string | null) => void;
+  onSelectRunner?: (value: RunnerOption | null) => void;
+  onSelectDay?: (day: number, link: string) => void;
 };
-export const IO: React.FunctionComponent<IOProps> = ({ onSelectRunner }) => {
-  const [input, setInput] = React.useState<string>("");
-  const [output, setOuput] = React.useState<string>("No runner selected.");
-  const [selectedRunner, setSelectedRunner] = React.useState<string | null>(
-    null
-  );
-
-  const computeOutput = async (_input: string) => {
-    setOuput("Computing...");
-    const _output =
-      runners.find((r) => r.title === selectedRunner)?.runner.run(_input) ??
-      "No output to display.";
-    setOuput(_output);
+export const IO: React.FunctionComponent<IOProps> = ({
+  onSelectRunner,
+  onSelectDay,
+}) => {
+  type State = {
+    input: string;
+    output: string;
+    day: number;
+    selectedRunner: string | null;
+    filteredRunners: string[];
   };
 
-  const _onSelectRunner = (runner: string | null) => {
-    setSelectedRunner(runner);
-    onSelectRunner && onSelectRunner(runner);
+  const [storedState, setStoredState] = useLocalStorage("aoc", {
+    input: "",
+    output: "No runner selected.",
+    day: 1,
+    selectedRunner: null,
+    filteredRunners: runners.filter((r) => r.day === 1).map((r) => r.title),
+  } as State);
+
+  console.log(storedState);
+
+  const [state, setState] = React.useReducer(
+    (oldState: State, newState: Partial<State>) => ({
+      ...oldState,
+      ...newState,
+    }),
+    storedState
+  );
+
+  const { input, output, day, selectedRunner, filteredRunners } = state;
+
+  const computeOutput = async (input: string) => {
+    setState({ output: "Computing..." });
+    setState({
+      output:
+        runners.find((r) => r.title === selectedRunner)?.runner.run(input) ??
+        "No output to display.",
+    });
+  };
+
+  const _onSelectDay = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const day = e.target.value ? Number(e.target.value) : 1;
+    setState({
+      day,
+      selectedRunner: null,
+      filteredRunners: runners.filter((r) => r.day === day).map((r) => r.title),
+    });
+  };
+
+  const _onSelectRunner = (runner: RunnerOption | null) => {
+    setState({ selectedRunner: runner && runner.title });
   };
 
   const _onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value);
+    setState({ input: e.target.value });
   };
 
   React.useEffect(() => {
     computeOutput(input);
+    const runner = runners.find((r) => r.title === selectedRunner);
+    onSelectRunner && onSelectRunner(runner ?? null);
+    onSelectDay && onSelectDay(day, runner?.link ?? "");
+    setStoredState({ input, output, day, selectedRunner, filteredRunners });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [input, selectedRunner]);
+  }, [input, selectedRunner, day]);
 
   return (
     <Column>
+      <Box
+        width={1}
+        mt={2}
+        mb={2}
+        pl={2}
+        pr={2}
+        sx={{ boxSizing: "border-box", overflow: "hidden" }}
+      >
+        <Typography id="input-slider" gutterBottom>
+          Select a Day
+        </Typography>
+        <Slider
+          aria-label="Restricted values"
+          value={day}
+          onChange={(e) =>
+            _onSelectDay(e as unknown as React.ChangeEvent<HTMLInputElement>)
+          }
+          step={null}
+          max={Math.max(...runners.map((r) => r.day))}
+          valueLabelDisplay="auto"
+          marks={Array(2)
+            .fill(1)
+            .map((num, idx) => ({ value: num + idx, label: num + idx }))}
+        />
+      </Box>
       <Box
         width={1}
         mt={2}
@@ -96,9 +155,10 @@ export const IO: React.FunctionComponent<IOProps> = ({ onSelectRunner }) => {
             <TextField {...params} label="Select a Runner" variant="standard" />
           )}
           getOptionLabel={(option: RunnerOption) => option.title}
-          options={runners}
+          options={runners.filter((r) => filteredRunners.includes(r.title))}
+          value={runners.find((r) => r.title === selectedRunner)}
           onChange={(event, newValue) => {
-            _onSelectRunner(newValue && newValue.title);
+            _onSelectRunner(newValue ?? null);
           }}
         />
       </Box>
@@ -135,12 +195,10 @@ export const IO: React.FunctionComponent<IOProps> = ({ onSelectRunner }) => {
   );
 };
 
-export const CodeViewer: React.FunctionComponent<{ runner: string | null }> = ({
-  runner,
-}) => {
-  const code =
-    (runner && runners.find((r) => r.title === runner)?.content) ||
-    "// No runner found.";
+export const CodeViewer: React.FunctionComponent<{
+  runner: RunnerOption | null;
+}> = ({ runner }) => {
+  const code = (runner && runner.content) || "// No runner found.";
   return (
     <Column>
       <SyntaxHighlighter language="typescript" style={materialDark}>
