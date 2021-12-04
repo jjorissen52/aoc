@@ -43,7 +43,9 @@ export const Column: React.FunctionComponent<GridProps> = ({
   ...props
 }) => (
   <Grid item xs={xs} {...props}>
-    <Item sx={{ height: "900px", overflow: "auto", ...sx }}>{children}</Item>
+    <Item sx={{ maxHeight: "900px", height: "70vh", overflow: "auto", ...sx }}>
+      {children}
+    </Item>
   </Grid>
 );
 
@@ -90,6 +92,15 @@ export const IO: React.FunctionComponent<IOProps> = ({
     });
   };
 
+  React.useEffect(() => {
+    computeOutput(input);
+    const runner = runners.find((r) => r.title === selectedRunner);
+    onSelectRunner && onSelectRunner(runner ?? null);
+    onSelectDay && onSelectDay(day, runner?.link ?? "");
+    setStoredState({ input, output, day, selectedRunner, filteredRunners });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [input, selectedRunner, day]);
+
   const _onSelectDay = (e: React.ChangeEvent<HTMLInputElement>) => {
     const day = e.target.value ? Number(e.target.value) : 1;
     const filteredRunners = runners
@@ -102,22 +113,9 @@ export const IO: React.FunctionComponent<IOProps> = ({
     });
   };
 
-  const _onSelectRunner = (runner: RunnerOption | null) => {
-    setState({ selectedRunner: runner && runner.title });
-  };
-
   const _onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({ input: e.target.value });
   };
-
-  React.useEffect(() => {
-    computeOutput(input);
-    const runner = runners.find((r) => r.title === selectedRunner);
-    onSelectRunner && onSelectRunner(runner ?? null);
-    onSelectDay && onSelectDay(day, runner?.link ?? "");
-    setStoredState({ input, output, day, selectedRunner, filteredRunners });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [input, selectedRunner, day]);
 
   return (
     <Column>
@@ -139,6 +137,7 @@ export const IO: React.FunctionComponent<IOProps> = ({
             _onSelectDay(e as unknown as React.ChangeEvent<HTMLInputElement>)
           }
           step={null}
+          min={1}
           max={Math.max(...runners.map((r) => r.day))}
           valueLabelDisplay="auto"
           marks={Array(Math.max(...runners.map((r) => r.day)))
@@ -184,6 +183,11 @@ export const IO: React.FunctionComponent<IOProps> = ({
             variant={"filled"}
             value={input}
             onChange={_onChangeInput}
+            InputProps={{
+              style: {
+                fontFamily: "Roboto Mono, monospace",
+              },
+            }}
           />
         </Box>
         <Box width={1 / 2} sx={{ height: "100%", margin: "8px 8px 8px 8px" }}>
@@ -197,6 +201,9 @@ export const IO: React.FunctionComponent<IOProps> = ({
             value={output}
             InputProps={{
               readOnly: true,
+              style: {
+                fontFamily: "Roboto Mono, monospace",
+              },
             }}
           />
         </Box>
@@ -209,6 +216,7 @@ export const CodeViewer: React.FunctionComponent<{
   runner: RunnerOption | null;
 }> = ({ runner }) => {
   const code = (runner && runner.content) || "// No runner found.";
+  console.log(materialDark);
   return (
     <Column>
       <SyntaxHighlighter language="typescript" style={materialDark}>

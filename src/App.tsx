@@ -34,7 +34,7 @@ const App: React.FunctionComponent = () => {
           },
           pre: {
             boxSizing: "border-box",
-            height: "98%",
+            height: "96%",
             margin: "8px 8px 8px 8px",
           },
         }}

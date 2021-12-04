@@ -13,7 +13,7 @@ const get = <T>(key: string, defaultValue: T): T => {
 /*
  * Same interface as useState but with a key, e.g. [value, setValue] = useLocalStorage('path.of.key', defaultValue)
  * */
-export const useLocalStorage = <T>(
+export const useLocalStorage = <T extends JSONValue>(
   key: string,
   defaultValue: T
 ): [T, (v: T) => void] => {

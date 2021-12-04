@@ -7,6 +7,8 @@ import { DiveRunner } from "./dive";
 import { AccurateDiveRunner } from "./accurate_dive";
 import { PowerConsumptionRunner } from "./power_consumption";
 import { LifeSupportRunner } from "./life_support";
+import { BingoRunner } from "./bingo";
+import { BadBingoRunner } from "./bingo";
 
 export type RunnerOption = {
   day: number;
@@ -58,5 +60,19 @@ export const runners: RunnerOption[] = [
     runner: LifeSupportRunner,
     content: raw("../code/life_support.ts"),
     link: "https://adventofcode.com/2021/day/3#part2",
+  },
+  {
+    day: 4,
+    title: "Bingo",
+    runner: BingoRunner,
+    content: raw("../code/bingo.ts"),
+    link: "https://adventofcode.com/2021/day/4",
+  },
+  {
+    day: 4,
+    title: "Bad Bingo",
+    runner: BadBingoRunner,
+    content: raw("../code/bingo.ts"),
+    link: "https://adventofcode.com/2021/day/4#part2",
   },
 ];
