@@ -6,7 +6,11 @@ import Box, { BoxProps } from "@mui/material/Box";
 import Grid, { GridProps } from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Slider from "@mui/material/Slider";
-import Autocomplete from "@mui/material/Autocomplete";
+
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -67,8 +71,6 @@ export const IO: React.FunctionComponent<IOProps> = ({
     filteredRunners: runners.filter((r) => r.day === 1).map((r) => r.title),
   } as State);
 
-  console.log(storedState);
-
   const [state, setState] = React.useReducer(
     (oldState: State, newState: Partial<State>) => ({
       ...oldState,
@@ -90,10 +92,13 @@ export const IO: React.FunctionComponent<IOProps> = ({
 
   const _onSelectDay = (e: React.ChangeEvent<HTMLInputElement>) => {
     const day = e.target.value ? Number(e.target.value) : 1;
+    const filteredRunners = runners
+      .filter((r) => r.day === day)
+      .map((r) => r.title);
     setState({
       day,
-      selectedRunner: null,
-      filteredRunners: runners.filter((r) => r.day === day).map((r) => r.title),
+      selectedRunner: filteredRunners?.[0] ?? null,
+      filteredRunners,
     });
   };
 
@@ -136,7 +141,7 @@ export const IO: React.FunctionComponent<IOProps> = ({
           step={null}
           max={Math.max(...runners.map((r) => r.day))}
           valueLabelDisplay="auto"
-          marks={Array(2)
+          marks={Array(Math.max(...runners.map((r) => r.day)))
             .fill(1)
             .map((num, idx) => ({ value: num + idx, label: num + idx }))}
         />
@@ -149,18 +154,23 @@ export const IO: React.FunctionComponent<IOProps> = ({
         pr={1}
         sx={{ boxSizing: "border-box" }}
       >
-        <Autocomplete
-          clearOnEscape
-          renderInput={(params) => (
-            <TextField {...params} label="Select a Runner" variant="standard" />
-          )}
-          getOptionLabel={(option: RunnerOption) => option.title}
-          options={runners.filter((r) => filteredRunners.includes(r.title))}
-          value={runners.find((r) => r.title === selectedRunner)}
-          onChange={(event, newValue) => {
-            _onSelectRunner(newValue ?? null);
-          }}
-        />
+        <FormControl fullWidth>
+          <InputLabel id="select-runner">Runner</InputLabel>
+          <Select
+            labelId="select-runner"
+            value={selectedRunner}
+            label="Select a Runner"
+            onChange={(e) =>
+              setState({ selectedRunner: e.target.value ?? null })
+            }
+          >
+            {filteredRunners.map((r) => (
+              <MenuItem key={r} value={r}>
+                {r}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </Box>
       <Box sx={{ display: "flex", flexFlow: "row" }}>
         <Box width={1 / 2} sx={{ height: "100%", margin: "8px 8px 8px 8px" }}>

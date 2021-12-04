@@ -37,6 +37,7 @@ module.exports = {
       '@typescript-eslint/no-unused-expressions': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/no-shadow': 'off',
-      '@typescript-eslint/lines-between-class-members': 'off'
+      '@typescript-eslint/lines-between-class-members': 'off',
+      '@typescript-eslint/no-loop-func': 'off'
     },
   };

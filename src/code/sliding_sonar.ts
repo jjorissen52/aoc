@@ -13,6 +13,5 @@ export const SlidingSonarRunner = new CodeRunner((input: string) => {
     .slice(2)
     .map((value, idx) => value + as_numbers[idx + 1] + as_numbers[idx]);
 
-  console.log(as_sliding_readings);
   return String(sonar(as_sliding_readings));
 });

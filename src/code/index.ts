@@ -5,6 +5,8 @@ import { SlidingSonarRunner } from "./sliding_sonar";
 import { SonarRunner } from "./sonar";
 import { DiveRunner } from "./dive";
 import { AccurateDiveRunner } from "./accurate_dive";
+import { PowerConsumptionRunner } from "./power_consumption";
+import { LifeSupportRunner } from "./life_support";
 
 export type RunnerOption = {
   day: number;
@@ -42,5 +44,19 @@ export const runners: RunnerOption[] = [
     runner: AccurateDiveRunner,
     content: raw("../code/accurate_dive.ts"),
     link: "https://adventofcode.com/2021/day/2#part2",
+  },
+  {
+    day: 3,
+    title: "Power Consumption",
+    runner: PowerConsumptionRunner,
+    content: raw("../code/power_consumption.ts"),
+    link: "https://adventofcode.com/2021/day/3",
+  },
+  {
+    day: 3,
+    title: "Life Support",
+    runner: LifeSupportRunner,
+    content: raw("../code/life_support.ts"),
+    link: "https://adventofcode.com/2021/day/3#part2",
   },
 ];
