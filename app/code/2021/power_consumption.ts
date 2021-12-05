@@ -1,4 +1,4 @@
-import { CodeRunner } from "./container";
+import { CodeRunner } from "~/code/container";
 
 export const counts = (numbers: number[]): Record<number, number> =>
   numbers.reduce(

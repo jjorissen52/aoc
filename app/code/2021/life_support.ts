@@ -1,4 +1,4 @@
-import { CodeRunner } from "./container";
+import { CodeRunner } from "~/code/container";
 
 import { bit_collapse, counts, Reduction } from "./power_consumption";
 
@@ -65,7 +65,7 @@ const least_common: Reduction = (numbers) => {
 const oxygen = (binaries: string[]): number => {
   let filtered_binaries = [...binaries];
   let bit_position = 0;
-  while (filtered_binaries.length > 1) {
+  while (filtered_binaries.length > 1 && bit_position < 100) {
     const bit_mask = bit_collapse(filtered_binaries, most_common) || "";
     filtered_binaries = filtered_binaries.filter(
       (b) => b[bit_position] === bit_mask[bit_position]
@@ -78,7 +78,7 @@ const oxygen = (binaries: string[]): number => {
 const co2_scrubber = (binaries: string[]): number => {
   let filtered_binaries = [...binaries];
   let bit_position = 0;
-  while (filtered_binaries.length > 1) {
+  while (filtered_binaries.length > 1 && bit_position < 100) {
     const bit_mask = bit_collapse(filtered_binaries, least_common) || "";
     filtered_binaries = filtered_binaries.filter(
       (b) => b[bit_position] === bit_mask[bit_position]

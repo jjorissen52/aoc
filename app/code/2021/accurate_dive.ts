@@ -1,4 +1,4 @@
-import { CodeRunner } from "./container";
+import { CodeRunner } from "~/code/container";
 import { input_to_vectors, Submarine } from "./dive";
 
 class AccurateSubmarine extends Submarine {

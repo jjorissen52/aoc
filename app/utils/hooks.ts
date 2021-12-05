@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
+import { JSONValue } from "~/@types/global";
 
 const get = <T>(key: string, defaultValue: T): T => {
-  const saved = localStorage.getItem(key);
   try {
+    const saved = localStorage.getItem(key);
     if (saved) return JSON.parse(saved);
   } catch {
     // pass
@@ -20,7 +21,11 @@ export const useLocalStorage = <T extends JSONValue>(
   const [value, setValue] = useState<T>(() => get(key, defaultValue));
 
   useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(value));
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch {
+      //pass
+    }
   }, [key, value]);
 
   return [value, setValue];

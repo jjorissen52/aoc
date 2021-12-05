@@ -1,12 +1,15 @@
+/* eslint-disable */
+
 /**
  * Run me with node --require esbuild-register ./src/cli.ts
  */
 import chalk from "chalk";
+// @ts-ignore
 import { program } from "commander";
 import { textSync } from "figlet";
 import fs from "fs";
 
-import { runners } from "./code";
+import { runners } from "~/routes/years/2021";
 
 program
   .version("0.0.0")

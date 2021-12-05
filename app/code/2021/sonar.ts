@@ -1,4 +1,4 @@
-import { CodeRunner } from "./container";
+import { CodeRunner } from "~/code/container";
 
 // https://adventofcode.com/2021/day/1
 export const sonar = (readings: number[]): number =>

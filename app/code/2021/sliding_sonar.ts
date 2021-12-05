@@ -1,4 +1,4 @@
-import { CodeRunner } from "./container";
+import { CodeRunner } from "~/code/container";
 
 import { sonar } from "./sonar";
 

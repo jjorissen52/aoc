@@ -1,4 +1,4 @@
-import { CodeRunner } from "./container";
+import { CodeRunner } from "~/code/container";
 import { input_to_numbers } from "./util";
 
 type Row<T> = [T, T, T, T, T];

@@ -1,4 +1,4 @@
-import { CodeRunner } from "./container";
+import { CodeRunner } from "~/code/container";
 
 const directions = ["up", "down", "forward"] as const;
 const directionSet = new Set(directions);
