@@ -1,5 +1,3 @@
-import raw from "raw.macro";
-
 import { CodeRunner } from "./container";
 import { SlidingSonarRunner } from "./sliding_sonar";
 import { SonarRunner } from "./sonar";
@@ -9,6 +7,7 @@ import { PowerConsumptionRunner } from "./power_consumption";
 import { LifeSupportRunner } from "./life_support";
 import { BingoRunner } from "./bingo";
 import { BadBingoRunner } from "./bingo";
+import { HydroThermal, MoreHydroThermal } from "./hydrothermal";
 
 export type RunnerOption = {
   day: number;
@@ -17,6 +16,21 @@ export type RunnerOption = {
   link: string;
   runner: CodeRunner;
 };
+
+// eslint-disable-next-line
+let raw = require("raw.macro");
+try {
+  // when bundling for browser
+  raw("../code/sonar.ts");
+} catch (e) {
+  // eslint-disable-next-line
+  const fs = require("fs");
+  // when running on cli
+  raw = (path: string) => {
+    const src_relative_path = `./src/${path.slice(3)}`;
+    return fs.readFileSync(src_relative_path, "utf-8");
+  };
+}
 
 export const runners: RunnerOption[] = [
   {
@@ -74,5 +88,19 @@ export const runners: RunnerOption[] = [
     runner: BadBingoRunner,
     content: raw("../code/bingo.ts"),
     link: "https://adventofcode.com/2021/day/4#part2",
+  },
+  {
+    day: 5,
+    title: "Hydro Thermal",
+    runner: HydroThermal,
+    content: raw("../code/hydrothermal.ts"),
+    link: "https://adventofcode.com/2021/day/5",
+  },
+  {
+    day: 5,
+    title: "More Hydro Thermal",
+    runner: MoreHydroThermal,
+    content: raw("../code/hydrothermal.ts"),
+    link: "https://adventofcode.com/2021/day/5#part2",
   },
 ];
