@@ -11,6 +11,7 @@ import { BadBingoRunner, BingoRunner } from "~/code/2021/bingo";
 import { HydroThermal, MoreHydroThermal } from "~/code/2021/hydrothermal";
 import CodeFrame from "~/components/CodeFrame";
 import { yearLoader } from "~/utils/loaders";
+import { FastLanternFish, SlowLanternFish } from "~/code/2021/lanternfish";
 
 export const runners: RunnerOption[] = [
   {
@@ -82,6 +83,22 @@ export const runners: RunnerOption[] = [
     file: "hydrothermal",
     runner: MoreHydroThermal,
     link: "https://adventofcode.com/2021/day/5#part2",
+  },
+  {
+    day: 6,
+    title: "Lantern Fish",
+    file: "lanternfish",
+    runner: SlowLanternFish,
+    link: "https://adventofcode.com/2021/day/6",
+    auxInputs: [{ name: "Days", default: "80" }],
+  },
+  {
+    day: 6,
+    title: "Fast Lantern Fish",
+    file: "lanternfish",
+    runner: FastLanternFish,
+    link: "https://adventofcode.com/2021/day/6",
+    auxInputs: [{ name: "Days", default: "256" }],
   },
 ];
 

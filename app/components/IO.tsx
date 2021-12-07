@@ -24,6 +24,7 @@ export const IO: React.FunctionComponent<IOProps> = ({
 }) => {
   type State = {
     input: string;
+    auxInput: string[];
     output: string;
     day: number;
     selectedRunner: string | null;
@@ -32,6 +33,7 @@ export const IO: React.FunctionComponent<IOProps> = ({
 
   const [storedState, setStoredState] = useLocalStorage("aoc", {
     input: "",
+    auxInput: [],
     output: "No runner selected.",
     day: 1,
     selectedRunner: null,
@@ -47,24 +49,34 @@ export const IO: React.FunctionComponent<IOProps> = ({
   );
 
   const { input, output, day, selectedRunner, filteredRunners } = state;
+  const runnerObject = runners.find((r) => r.title === selectedRunner);
+  const auxInput =
+    state.auxInput ?? Array(runnerObject?.auxInputs?.length ?? 0).fill("");
 
-  const computeOutput = async (input: string) => {
+  const computeOutput = async (input: string, auxInputs: string[]) => {
     setState({ output: "Computing..." });
     setState({
       output:
-        runners.find((r) => r.title === selectedRunner)?.runner.run(input) ??
+        runnerObject?.runner.run(input, ...(auxInputs ?? [])) ??
         "No output to display.",
     });
   };
 
   React.useEffect(() => {
-    computeOutput(input);
+    computeOutput(input, auxInput);
     const runner = runners.find((r) => r.title === selectedRunner);
     onSelectRunner && onSelectRunner(runner ?? null);
     onSelectDay && onSelectDay(day, runner?.link ?? "");
-    setStoredState({ input, output, day, selectedRunner, filteredRunners });
+    setStoredState({
+      input,
+      auxInput,
+      output,
+      day,
+      selectedRunner,
+      filteredRunners,
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [input, selectedRunner, day]);
+  }, [input, auxInput, selectedRunner, day]);
 
   const _onSelectDay = (e: React.ChangeEvent<HTMLInputElement>) => {
     const day = e.target.value ? Number(e.target.value) : 1;
@@ -80,6 +92,14 @@ export const IO: React.FunctionComponent<IOProps> = ({
 
   const _onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({ input: e.target.value });
+  };
+
+  const _onChangeAuxInput = (idx: number) => {
+    const newAuxInput = [...auxInput];
+    return (e: React.ChangeEvent<HTMLInputElement>) => {
+      newAuxInput[idx] = e.target.value;
+      setState({ auxInput: newAuxInput });
+    };
   };
 
   return (
@@ -144,6 +164,36 @@ export const IO: React.FunctionComponent<IOProps> = ({
             </Select>
           </FormControl>
         </Box>
+        {runnerObject?.auxInputs?.length && (
+          <Box
+            width={1}
+            mt={2}
+            mb={2}
+            pl={1}
+            pr={1}
+            sx={{
+              boxSizing: "border-box",
+              flexBasis: "max-content",
+            }}
+          >
+            {runnerObject.auxInputs.map((aux, idx) => (
+              <Box key={aux.name} width={1} sx={{ height: "100%" }}>
+                <TextField
+                  sx={{ width: "100%" }}
+                  label={aux.name}
+                  placeholder={aux.default}
+                  value={auxInput[idx] ?? aux.default}
+                  onChange={_onChangeAuxInput(idx)}
+                  InputProps={{
+                    style: {
+                      fontFamily: "Roboto Mono, monospace",
+                    },
+                  }}
+                />
+              </Box>
+            ))}
+          </Box>
+        )}
         <Box sx={{ display: "flex", flexFlow: "row" }}>
           <Box width={1 / 2} sx={{ height: "100%", margin: "8px 8px 8px 8px" }}>
             <TextField

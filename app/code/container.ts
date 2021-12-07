@@ -1,4 +1,4 @@
-export type Solution = (input: string) => string;
+export type Solution = (input: string, ...auxInput: string[]) => string;
 
 export class CodeRunner {
   func: Solution;
@@ -7,7 +7,7 @@ export class CodeRunner {
     this.func = func.bind(this);
   }
 
-  run(input: string): string {
-    return this.func(input);
+  run(input: string, ...auxInput: string[]): string {
+    return this.func(input, ...auxInput);
   }
 }
