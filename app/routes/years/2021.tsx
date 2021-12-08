@@ -12,6 +12,7 @@ import { HydroThermal, MoreHydroThermal } from "~/code/2021/hydrothermal";
 import CodeFrame from "~/components/CodeFrame";
 import { yearLoader } from "~/utils/loaders";
 import { FastLanternFish, SlowLanternFish } from "~/code/2021/lanternfish";
+import { ComplexCrabRunner, CrabRunner } from "~/code/2021/crabs";
 
 export const runners: RunnerOption[] = [
   {
@@ -99,6 +100,20 @@ export const runners: RunnerOption[] = [
     runner: FastLanternFish,
     link: "https://adventofcode.com/2021/day/6",
     auxInputs: [{ name: "Days", default: "256" }],
+  },
+  {
+    day: 7,
+    title: "Crabs",
+    file: "crabs",
+    runner: CrabRunner,
+    link: "https://adventofcode.com/2021/day/7",
+  },
+  {
+    day: 7,
+    title: "Complex Crabs",
+    file: "crabs",
+    runner: ComplexCrabRunner,
+    link: "https://adventofcode.com/2021/day/7#part2",
   },
 ];
 
