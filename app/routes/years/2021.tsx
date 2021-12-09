@@ -13,6 +13,7 @@ import CodeFrame from "~/components/CodeFrame";
 import { yearLoader } from "~/utils/loaders";
 import { FastLanternFish, SlowLanternFish } from "~/code/2021/lanternfish";
 import { ComplexCrabRunner, CrabRunner } from "~/code/2021/crabs";
+import { FullDigitRunner, SimpleDigitRunner } from "~/code/2021/digits";
 
 export const runners: RunnerOption[] = [
   {
@@ -114,6 +115,20 @@ export const runners: RunnerOption[] = [
     file: "crabs",
     runner: ComplexCrabRunner,
     link: "https://adventofcode.com/2021/day/7#part2",
+  },
+  {
+    day: 8,
+    title: "Easy Digits",
+    file: "digits",
+    runner: SimpleDigitRunner,
+    link: "https://adventofcode.com/2021/day/8",
+  },
+  {
+    day: 8,
+    title: "Full Digits",
+    file: "digits",
+    runner: FullDigitRunner,
+    link: "https://adventofcode.com/2021/day/8#part2",
   },
 ];
 

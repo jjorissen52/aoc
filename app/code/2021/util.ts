@@ -8,3 +8,16 @@ export const input_to_numbers = (
     .map(parseFloat)
     .filter((v) => !isNaN(v));
 };
+
+export const partition = <T>(
+  values: T[],
+  predicate: (v: T) => boolean
+): [T[], T[]] => {
+  const matches = [] as T[];
+  const no_match = [] as T[];
+  values.forEach((v) => {
+    if (predicate(v)) matches.push(v);
+    else no_match.push(v);
+  });
+  return [matches, no_match];
+};
