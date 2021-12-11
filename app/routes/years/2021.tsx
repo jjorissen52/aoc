@@ -14,6 +14,7 @@ import { yearLoader } from "~/utils/loaders";
 import { FastLanternFish, SlowLanternFish } from "~/code/2021/lanternfish";
 import { ComplexCrabRunner, CrabRunner } from "~/code/2021/crabs";
 import { FullDigitRunner, SimpleDigitRunner } from "~/code/2021/digits";
+import { LavaBasinRunner, LavaRiskRunner } from "~/code/2021/lava_tubes";
 
 export const runners: RunnerOption[] = [
   {
@@ -129,6 +130,20 @@ export const runners: RunnerOption[] = [
     file: "digits",
     runner: FullDigitRunner,
     link: "https://adventofcode.com/2021/day/8#part2",
+  },
+  {
+    day: 9,
+    title: "Lava Risk",
+    file: "lava_tubes",
+    runner: LavaRiskRunner,
+    link: "https://adventofcode.com/2021/day/9",
+  },
+  {
+    day: 9,
+    title: "Lava Basins",
+    file: "lava_tubes",
+    runner: LavaBasinRunner,
+    link: "https://adventofcode.com/2021/day/9#part2",
   },
 ];
 

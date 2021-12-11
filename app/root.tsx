@@ -12,7 +12,7 @@ const darkTheme = createTheme({
 
 function Document({
   children,
-  title = `Remix: So great, it's funny!`,
+  title = `Advent of Code`,
 }: {
   children: React.ReactNode;
   title?: string;
