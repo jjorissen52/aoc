@@ -21,3 +21,16 @@ export const partition = <T>(
   });
   return [matches, no_match];
 };
+
+export const input_to_grid = (input: string) => {
+  const cols = Array.from(input.split(/\n/)[0]).length;
+  const as_numbers = input.split(/\n/).reduce((numbers, line) => {
+    return numbers.concat(
+      Array.from(line)
+        .map((n) => parseInt(n))
+        .filter((n) => !isNaN(n))
+    );
+  }, [] as number[]);
+  const rows = Math.floor(as_numbers.length / cols);
+  return { cols, rows, numbers: as_numbers };
+};

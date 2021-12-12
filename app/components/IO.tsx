@@ -105,66 +105,39 @@ export const IO: React.FunctionComponent<IOProps> = ({
   return (
     <Column sx={{ display: "flex", flexDirection: "column" }}>
       <NoSsr>
-        <Box
-          width={1}
-          mt={2}
-          mb={2}
-          pl={2}
-          pr={2}
-          sx={{
-            boxSizing: "border-box",
-            overflow: "hidden",
-            flexBasis: "100px",
-          }}
-        >
-          <Typography id="input-slider" gutterBottom>
-            Select a Day
-          </Typography>
-          <Slider
-            aria-label="Restricted values"
-            value={day}
-            onChange={(e) =>
-              _onSelectDay(e as unknown as React.ChangeEvent<HTMLInputElement>)
-            }
-            step={null}
-            min={1}
-            max={Math.max(...runners.map((r) => r.day))}
-            valueLabelDisplay="auto"
-            marks={Array(Math.max(...runners.map((r) => r.day)))
-              .fill(1)
-              .map((num, idx) => ({ value: num + idx, label: num + idx }))}
-          />
-        </Box>
-        <Box
-          width={1}
-          mt={2}
-          mb={2}
-          pl={1}
-          pr={1}
-          sx={{
-            boxSizing: "border-box",
-            flexBasis: "max-content",
-          }}
-        >
-          <FormControl fullWidth>
-            <InputLabel id="select-runner">Runner</InputLabel>
-            <Select
-              labelId="select-runner"
-              value={selectedRunner}
-              label="Select a Runner"
+        <Box sx={{ minHeight: "300px" }}>
+          <Box
+            width={1}
+            mt={2}
+            mb={2}
+            pl={2}
+            pr={2}
+            sx={{
+              boxSizing: "border-box",
+              overflow: "hidden",
+              flexBasis: "100px",
+            }}
+          >
+            <Typography id="input-slider" gutterBottom>
+              Select a Day
+            </Typography>
+            <Slider
+              aria-label="Restricted values"
+              value={day}
               onChange={(e) =>
-                setState({ selectedRunner: e.target.value ?? null })
+                _onSelectDay(
+                  e as unknown as React.ChangeEvent<HTMLInputElement>
+                )
               }
-            >
-              {filteredRunners.map((r) => (
-                <MenuItem key={r} value={r}>
-                  {r}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Box>
-        {runnerObject?.auxInputs?.length && (
+              step={null}
+              min={1}
+              max={Math.max(...runners.map((r) => r.day))}
+              valueLabelDisplay="auto"
+              marks={Array(Math.max(...runners.map((r) => r.day)))
+                .fill(1)
+                .map((num, idx) => ({ value: num + idx, label: num + idx }))}
+            />
+          </Box>
           <Box
             width={1}
             mt={2}
@@ -176,24 +149,55 @@ export const IO: React.FunctionComponent<IOProps> = ({
               flexBasis: "max-content",
             }}
           >
-            {runnerObject.auxInputs.map((aux, idx) => (
-              <Box key={aux.name} width={1} sx={{ height: "100%" }}>
-                <TextField
-                  sx={{ width: "100%" }}
-                  label={aux.name}
-                  placeholder={aux.default}
-                  value={auxInput[idx] ?? aux.default}
-                  onChange={_onChangeAuxInput(idx)}
-                  InputProps={{
-                    style: {
-                      fontFamily: "Roboto Mono, monospace",
-                    },
-                  }}
-                />
-              </Box>
-            ))}
+            <FormControl fullWidth>
+              <InputLabel id="select-runner">Runner</InputLabel>
+              <Select
+                labelId="select-runner"
+                value={selectedRunner}
+                label="Select a Runner"
+                onChange={(e) =>
+                  setState({ selectedRunner: e.target.value ?? null })
+                }
+              >
+                {filteredRunners.map((r) => (
+                  <MenuItem key={r} value={r}>
+                    {r}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Box>
-        )}
+          {runnerObject?.auxInputs?.length && (
+            <Box
+              width={1}
+              mt={2}
+              mb={2}
+              pl={1}
+              pr={1}
+              sx={{
+                boxSizing: "border-box",
+                flexBasis: "max-content",
+              }}
+            >
+              {runnerObject.auxInputs.map((aux, idx) => (
+                <Box key={aux.name} width={1} sx={{ height: "100%" }}>
+                  <TextField
+                    sx={{ width: "100%" }}
+                    label={aux.name}
+                    placeholder={aux.default}
+                    value={auxInput[idx] ?? aux.default}
+                    onChange={_onChangeAuxInput(idx)}
+                    InputProps={{
+                      style: {
+                        fontFamily: "Roboto Mono, monospace",
+                      },
+                    }}
+                  />
+                </Box>
+              ))}
+            </Box>
+          )}
+        </Box>
         <Box sx={{ display: "flex", flexFlow: "row" }}>
           <Box width={1 / 2} sx={{ height: "100%", margin: "8px 8px 8px 8px" }}>
             <TextField

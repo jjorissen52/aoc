@@ -16,6 +16,7 @@ import { ComplexCrabRunner, CrabRunner } from "~/code/2021/crabs";
 import { FullDigitRunner, SimpleDigitRunner } from "~/code/2021/digits";
 import { LavaBasinRunner, LavaRiskRunner } from "~/code/2021/lava_tubes";
 import { AutocompleteRunner, SyntaxRunner } from "~/code/2021/syntax";
+import { CountFlashRunner, SyncFlashRunner } from "~/code/2021/octopi";
 
 export const runners: RunnerOption[] = [
   {
@@ -159,6 +160,22 @@ export const runners: RunnerOption[] = [
     file: "syntax",
     runner: AutocompleteRunner,
     link: "https://adventofcode.com/2021/day/10#part2",
+  },
+  {
+    day: 11,
+    title: "Count Flash",
+    file: "octopi",
+    runner: CountFlashRunner,
+    link: "https://adventofcode.com/2021/day/11",
+    auxInputs: [{ name: "Steps", default: "100" }],
+  },
+  {
+    day: 11,
+    title: "Sync Flash",
+    file: "octopi",
+    runner: SyncFlashRunner,
+    link: "https://adventofcode.com/2021/day/11#part2",
+    auxInputs: [{ name: "Max Steps", default: "10000" }],
   },
 ];
 

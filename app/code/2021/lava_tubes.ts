@@ -1,4 +1,5 @@
 import { CodeRunner } from "~/code/container";
+import { input_to_grid } from "~/code/2021/util";
 
 type Height = number;
 type Risk = number;
@@ -134,16 +135,8 @@ class Basin {
 }
 
 const build_basin = (input: string): Basin => {
-  const cols = Array.from(input.split(/\n/)[0]).length;
-  const as_numbers = input.split(/\n/).reduce((numbers, line) => {
-    return numbers.concat(
-      Array.from(line)
-        .map((n) => parseInt(n))
-        .filter((n) => !isNaN(n))
-    );
-  }, [] as number[]);
-  const rows = Math.floor(as_numbers.length / cols);
-  return new Basin(rows, cols, as_numbers);
+  const { rows, cols, numbers } = input_to_grid(input);
+  return new Basin(rows, cols, numbers);
 };
 
 export const LavaRiskRunner = new CodeRunner((input: string) => {
