@@ -1,4 +1,4 @@
-import { CodeRunner } from "~/code/container";
+import { CodeRunner } from "~/code/code_runner";
 import { partition } from "~/code/2021/util";
 
 const intersection =

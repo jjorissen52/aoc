@@ -1,4 +1,4 @@
-import { CodeRunner } from "~/code/container";
+import { CodeRunner } from "~/code/code_runner";
 // map of grouping depth to the indexes of control characters occurring at that depth
 type ChunkMap = Record<number, number[]>;
 

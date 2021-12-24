@@ -1,4 +1,4 @@
-import { CodeRunner } from "~/code/container";
+import { CodeRunner } from "~/code/code_runner";
 import { predicateDefault } from "~/code/2021/util";
 
 type Pair = [string, string];

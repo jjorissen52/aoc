@@ -1,4 +1,4 @@
-import { CodeRunner } from "~/code/container";
+import { CodeRunner } from "~/code/code_runner";
 
 type CostFunction = (center: number, numbers: number[]) => number;
 const simple_cost: CostFunction = (center, numbers) =>

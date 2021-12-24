@@ -7,12 +7,16 @@ import Grid from "@mui/material/Grid";
 import { IO } from "~/components/IO";
 import { CodeViewer } from "~/components/CodeViewer";
 import Typography from "@mui/material/Typography";
+import { SolutionDisplay } from "~/code/code_runner";
 
 type CodeFrameProps = {
   code: Record<string, string>;
 };
 export default function CodeFrame({ code }: CodeFrameProps) {
   const [runner, setRunner] = React.useState<RunnerOption | null>(null);
+  const [solution, setSolution] = React.useState<SolutionDisplay | undefined>(
+    undefined
+  );
   const [day, setDay] = React.useState<number>(1);
   const [link, setLink] = React.useState("");
 
@@ -25,8 +29,12 @@ export default function CodeFrame({ code }: CodeFrameProps) {
   return (
     <Box mt={3} sx={{ flexGrow: 1 }}>
       <Grid container spacing={2} sx={{ overflow: "hidden" }}>
-        <IO onSelectRunner={setRunner} onSelectDay={onSelectDay} />
-        <CodeViewer code={selectedCode} />
+        <IO
+          onSelectRunner={setRunner}
+          onSelectDay={onSelectDay}
+          onOutput={setSolution}
+        />
+        <CodeViewer code={selectedCode} solution={solution} />
       </Grid>
       <Flex
         sx={{

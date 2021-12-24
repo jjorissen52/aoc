@@ -43,3 +43,26 @@ export const predicateDefault = <T>(
   if (!predicate(value)) return fallback;
   return value;
 };
+
+export type Coord = { row: number; col: number };
+
+export class Grid {
+  rows: number;
+  cols: number;
+
+  constructor(rows: number, cols: number) {
+    this.rows = rows;
+    this.cols = cols;
+  }
+
+  coords(idx: number): Coord {
+    const { cols } = this;
+    const row = Math.floor(idx / cols);
+    const col = idx % cols;
+    return { row, col };
+  }
+
+  idx(row: number, col: number): number {
+    return this.cols * row + col;
+  }
+}

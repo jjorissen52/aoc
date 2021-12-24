@@ -12,20 +12,24 @@ import { Column } from "~/components/Semantic";
 import { useLocalStorage } from "~/utils/hooks";
 import { NoSsr } from "@mui/material";
 import { RunnerOption } from "~/@types/global";
+import { SolutionDisplay, SolutionOutput } from "~/code/code_runner";
 
 export type IOProps = {
   onSelectRunner?: (value: RunnerOption | null) => void;
   onSelectDay?: (day: number, link: string) => void;
+  onOutput?: (solution: SolutionDisplay) => void;
 };
+
+const _ = (str: string) => new SolutionOutput(str);
 
 export const IO: React.FunctionComponent<IOProps> = ({
   onSelectRunner,
   onSelectDay,
+  onOutput,
 }) => {
   type State = {
     input: string;
     auxInput: string[];
-    output: string;
     day: number;
     selectedRunner: string | null;
     filteredRunners: string[];
@@ -34,12 +38,12 @@ export const IO: React.FunctionComponent<IOProps> = ({
   const [storedState, setStoredState] = useLocalStorage("aoc", {
     input: "",
     auxInput: [],
-    output: "No runner selected.",
     day: 1,
     selectedRunner: null,
     filteredRunners: runners.filter((r) => r.day === 1).map((r) => r.title),
-  } as State);
+  } as Omit<State, "output">);
 
+  const [output, setOutput] = React.useState<SolutionDisplay>(_("..."));
   const [state, setState] = React.useReducer(
     (oldState: State, newState: Partial<State>) => ({
       ...oldState,
@@ -48,18 +52,17 @@ export const IO: React.FunctionComponent<IOProps> = ({
     storedState
   );
 
-  const { input, output, day, selectedRunner, filteredRunners } = state;
+  const { input, day, selectedRunner, filteredRunners } = state;
   const runnerObject = runners.find((r) => r.title === selectedRunner);
   const auxInput =
     state.auxInput ?? Array(runnerObject?.auxInputs?.length ?? 0).fill("");
 
   const computeOutput = async (input: string, auxInputs: string[]) => {
-    setState({ output: "Computing..." });
-    setState({
-      output:
-        runnerObject?.runner.run(input, ...(auxInputs ?? [])) ??
-        "No output to display.",
-    });
+    const solution =
+      runnerObject?.runner.run(input, ...(auxInputs ?? [])) ??
+      _("No output to display.");
+    setOutput(solution);
+    onOutput && onOutput(solution);
   };
 
   React.useEffect(() => {
@@ -70,7 +73,6 @@ export const IO: React.FunctionComponent<IOProps> = ({
     setStoredState({
       input,
       auxInput,
-      output,
       day,
       selectedRunner,
       filteredRunners,
@@ -223,7 +225,7 @@ export const IO: React.FunctionComponent<IOProps> = ({
               placeholder="Output"
               multiline
               variant={"filled"}
-              value={output}
+              value={String(output)}
               InputProps={{
                 readOnly: true,
                 style: {

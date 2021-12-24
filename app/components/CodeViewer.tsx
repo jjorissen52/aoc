@@ -1,16 +1,56 @@
 import React from "react";
-import { Column } from "~/components/Semantic";
+import { Box, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import CodeIcon from "@mui/icons-material/Code";
+import CreateIcon from "@mui/icons-material/Create";
+import ImageIcon from "@mui/icons-material/Image";
 
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { Column, Flex } from "~/components/Semantic";
+import { SolutionDisplay } from "~/code/code_runner";
+import { useLocalStorage } from "~/utils/hooks";
 
 export const CodeViewer: React.FunctionComponent<{
   code?: string;
-}> = ({ code }) => {
+  solution?: SolutionDisplay;
+}> = ({ code, solution }) => {
+  const [displayMode, setDisplayMode] = useLocalStorage<
+    "code" | "html" | "string"
+  >("display-mode", "string");
+  const solutionWithNewlines = () =>
+    String(solution ?? "...").replace(/\n/g, "<br>");
+  const htmlOutput =
+    displayMode === "html"
+      ? solution?.toHTML
+        ? solution.toHTML()
+        : solutionWithNewlines()
+      : solutionWithNewlines();
   return (
-    <Column>
-      <SyntaxHighlighter language="typescript" style={materialDark}>
-        {code ? code : "// No runner found."}
-      </SyntaxHighlighter>
+    <Column sx={{ fontFamily: "monospace" }}>
+      <Flex justifyContent={"right"}>
+        <ToggleButtonGroup
+          exclusive
+          value={displayMode}
+          onChange={(ev, mode) => setDisplayMode(mode)}
+        >
+          <ToggleButton value={"string"} aria-label={"string"}>
+            <CreateIcon />
+          </ToggleButton>
+          <ToggleButton value={"html"} aria-label={"html"}>
+            <ImageIcon />
+          </ToggleButton>
+          <ToggleButton value={"code"} aria-label={"code"}>
+            <CodeIcon />
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Flex>
+      {displayMode !== "code" && (
+        <Box dangerouslySetInnerHTML={{ __html: htmlOutput }} />
+      )}
+      {displayMode === "code" && (
+        <SyntaxHighlighter language="typescript" style={materialDark}>
+          {code ? code : "// No runner found."}
+        </SyntaxHighlighter>
+      )}
     </Column>
   );
 };

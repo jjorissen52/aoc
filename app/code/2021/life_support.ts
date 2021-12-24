@@ -1,4 +1,4 @@
-import { CodeRunner } from "~/code/container";
+import { CodeRunner } from "~/code/code_runner";
 
 import { bit_collapse, counts, Reduction } from "./power_consumption";
 

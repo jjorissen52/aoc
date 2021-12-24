@@ -18,6 +18,7 @@ import { LavaBasinRunner, LavaRiskRunner } from "~/code/2021/lava_tubes";
 import { AutocompleteRunner, SyntaxRunner } from "~/code/2021/syntax";
 import { CountFlashRunner, SyncFlashRunner } from "~/code/2021/octopi";
 import { PathRunner } from "~/code/2021/pathing";
+import { Origami } from "~/code/2021/origami";
 
 export const runners: RunnerOption[] = [
   {
@@ -187,6 +188,17 @@ export const runners: RunnerOption[] = [
     auxInputs: [
       { name: "Small Room Limit", default: "1" },
       { name: "Small Room Buff", default: "0" },
+    ],
+  },
+  {
+    day: 13,
+    title: "Origami",
+    file: "origami",
+    runner: Origami,
+    link: "https://adventofcode.com/2021/day/13",
+    auxInputs: [
+      { name: "Size Scale", default: "10" },
+      { name: "Dot Scale", default: "10" },
     ],
   },
 ];
