@@ -34,3 +34,12 @@ export const input_to_grid = (input: string) => {
   const rows = Math.floor(as_numbers.length / cols);
   return { cols, rows, numbers: as_numbers };
 };
+
+export const predicateDefault = <T>(
+  value: T,
+  predicate: (v: T) => boolean,
+  fallback: T
+) => {
+  if (!predicate(value)) return fallback;
+  return value;
+};

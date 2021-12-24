@@ -170,17 +170,15 @@ export const IO: React.FunctionComponent<IOProps> = ({
           {runnerObject?.auxInputs?.length && (
             <Box
               width={1}
-              mt={2}
-              mb={2}
-              pl={1}
-              pr={1}
+              my={2}
+              px={1}
               sx={{
                 boxSizing: "border-box",
                 flexBasis: "max-content",
               }}
             >
               {runnerObject.auxInputs.map((aux, idx) => (
-                <Box key={aux.name} width={1} sx={{ height: "100%" }}>
+                <Box key={aux.name} width={1} my={2} sx={{ height: "100%" }}>
                   <TextField
                     sx={{ width: "100%" }}
                     label={aux.name}

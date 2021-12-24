@@ -17,6 +17,7 @@ import { FullDigitRunner, SimpleDigitRunner } from "~/code/2021/digits";
 import { LavaBasinRunner, LavaRiskRunner } from "~/code/2021/lava_tubes";
 import { AutocompleteRunner, SyntaxRunner } from "~/code/2021/syntax";
 import { CountFlashRunner, SyncFlashRunner } from "~/code/2021/octopi";
+import { PathRunner } from "~/code/2021/pathing";
 
 export const runners: RunnerOption[] = [
   {
@@ -176,6 +177,17 @@ export const runners: RunnerOption[] = [
     runner: SyncFlashRunner,
     link: "https://adventofcode.com/2021/day/11#part2",
     auxInputs: [{ name: "Max Steps", default: "10000" }],
+  },
+  {
+    day: 12,
+    title: "Pathing",
+    file: "pathing",
+    runner: PathRunner,
+    link: "https://adventofcode.com/2021/day/12",
+    auxInputs: [
+      { name: "Small Room Limit", default: "1" },
+      { name: "Small Room Buff", default: "0" },
+    ],
   },
 ];
 
