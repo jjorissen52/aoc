@@ -12,7 +12,6 @@ export class SolutionOutput implements SolutionDisplay {
   private readonly str: string;
   private readonly html: string;
   constructor(str: string, html?: string) {
-    console.log(str);
     this.str = str;
     this.html = html ?? str.replace(/\n/g, "<br>");
   }

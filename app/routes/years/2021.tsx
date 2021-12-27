@@ -19,6 +19,7 @@ import { AutocompleteRunner, SyntaxRunner } from "~/code/2021/syntax";
 import { CountFlashRunner, SyncFlashRunner } from "~/code/2021/octopi";
 import { PathRunner } from "~/code/2021/pathing";
 import { Origami } from "~/code/2021/origami";
+import { FastPolymerizer, SlowPolymerizer } from "~/code/2021/polymerization";
 
 export const runners: RunnerOption[] = [
   {
@@ -200,6 +201,25 @@ export const runners: RunnerOption[] = [
       { name: "Size Scale", default: "10" },
       { name: "Dot Scale", default: "10" },
     ],
+  },
+  {
+    day: 14,
+    title: "Slow Polymerization",
+    file: "polymerization",
+    runner: SlowPolymerizer,
+    link: "https://adventofcode.com/2021/day/14",
+    auxInputs: [
+      { name: "Steps", default: "1" },
+      { name: "Show Chain", default: "0" },
+    ],
+  },
+  {
+    day: 14,
+    title: "Fast Polymerization",
+    file: "polymerization",
+    runner: FastPolymerizer,
+    link: "https://adventofcode.com/2021/day/14#part2",
+    auxInputs: [{ name: "Steps", default: "1" }],
   },
 ];
 
