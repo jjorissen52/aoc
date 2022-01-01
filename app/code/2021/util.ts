@@ -45,7 +45,8 @@ export const predicateDefault = <T>(
 };
 
 export type Coord = { row: number; col: number };
-
+// represents a grid boundary found in Basin.{up, right, left, down}
+export type Boundary = -1;
 export class Grid {
   rows: number;
   cols: number;
@@ -65,4 +66,91 @@ export class Grid {
   idx(row: number, col: number): number {
     return this.cols * row + col;
   }
+
+  /*
+   * Each of the methods below computes whether the point in the indicated direction
+   * is larger that the given grid point.
+   *   1. If a point is a boundary, that direction is always considered to be larger, e.g.,
+   *      if we are the top row, then up always returns -1 (type of Boundary).*/
+  up(i: number): number | Boundary {
+    const { row, col } = this.coords(i);
+    const irow = row - 1;
+    if (irow < 0) return -1;
+    return this.idx(irow, col);
+  }
+
+  right(i: number): number | Boundary {
+    const { row, col } = this.coords(i);
+    const icol = col + 1;
+    if (icol > this.cols - 1) return -1;
+    return this.idx(row, icol);
+  }
+
+  down(i: number): number | Boundary {
+    const { row, col } = this.coords(i);
+    const irow = row + 1;
+    if (irow > this.rows - 1) return -1;
+    return this.idx(irow, col);
+  }
+
+  left(i: number): number | Boundary {
+    const { row, col } = this.coords(i);
+    const icol = col - 1;
+    if (icol < 0) return -1;
+    return this.idx(row, icol);
+  }
+
+  draw(numbers: number[]): string {
+    const matrix = <number[][]>[];
+    numbers.forEach((number, idx) => {
+      const { row } = this.coords(idx);
+      if (matrix.length === row) matrix.push([] as number[]);
+      matrix[row].push(number);
+    });
+    return matrix.map((row) => row.join("")).join("\n");
+  }
+
+  svg(
+    numbers: number[],
+    {
+      highlights,
+      scale = 14,
+      font = 14,
+    }: {
+      highlights?: Map<number, string>;
+      scale?: number;
+      font?: number;
+    } = {}
+  ): string {
+    const text = numbers.map((n, idx) => {
+      const { row, col } = this.coords(idx);
+      const scaled = [font + col * scale, font + row * scale];
+      const fill =
+        highlights && highlights.has(idx)
+          ? highlights.get(idx)
+            ? highlights.get(idx)
+            : "white"
+          : "grey";
+      return `
+        <text font-size="${font}"
+              fill="${fill}"
+              font-family="Verdana"
+              text-anchor="middle"
+              alignment-baseline="baseline"
+              x="${scaled[0]}"
+              y="${scaled[1]}">${n}</text>`;
+    });
+    return `<svg width="${this.cols * scale + font}" height="${
+      this.rows * scale + font
+    }" xmlns="http://www.w3.org/2000/svg">${text}</svg>`;
+  }
 }
+
+export const isBoundary = (val: number): boolean => {
+  switch (val) {
+    case -1:
+      return true;
+    default:
+      return false;
+  }
+};

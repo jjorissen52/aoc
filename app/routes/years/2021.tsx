@@ -20,6 +20,7 @@ import { CountFlashRunner, SyncFlashRunner } from "~/code/2021/octopi";
 import { PathRunner } from "~/code/2021/pathing";
 import { Origami } from "~/code/2021/origami";
 import { FastPolymerizer, SlowPolymerizer } from "~/code/2021/polymerization";
+import { BigDijkstraRunner, DijkstraRunner } from "~/code/2021/dijkstra";
 
 export const runners: RunnerOption[] = [
   {
@@ -220,6 +221,40 @@ export const runners: RunnerOption[] = [
     runner: FastPolymerizer,
     link: "https://adventofcode.com/2021/day/14#part2",
     auxInputs: [{ name: "Steps", default: "1" }],
+  },
+  {
+    day: 15,
+    title: "Dijkstra's",
+    file: "dijkstra",
+    runner: DijkstraRunner,
+    link: "https://adventofcode.com/2021/day/15",
+    auxInputs: [
+      {
+        name: "Scale",
+        default: "14",
+      },
+      {
+        name: "Font",
+        default: "14",
+      },
+    ],
+  },
+  {
+    day: 15,
+    title: "Big Dijkstra's",
+    file: "dijkstra",
+    runner: BigDijkstraRunner,
+    link: "https://adventofcode.com/2021/day/15#part2",
+    auxInputs: [
+      {
+        name: "Scale",
+        default: "14",
+      },
+      {
+        name: "Font",
+        default: "14",
+      },
+    ],
   },
 ];
 

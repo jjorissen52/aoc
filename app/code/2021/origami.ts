@@ -28,7 +28,7 @@ class Paper extends Grid {
     return output.map((row) => row.join("")).join("\n");
   }
 
-  svg(sizeScale = 10, dotScale = 10): string {
+  html(sizeScale = 10, dotScale = 10): string {
     const marks = Array.from(this.marks)
       .map((mark) => {
         const { row, col } = this.coords(mark);
@@ -100,6 +100,6 @@ export const Origami = new CodeRunner((input: string, ...auxInput) => {
   const paper = doOrigami(input);
   return new SolutionOutput(
     `${Array.from(paper.marks).length}:\n${paper.display()}`,
-    paper.svg(sizeScale, dotScale)
+    paper.html(sizeScale, dotScale)
   );
 });

@@ -1,31 +1,17 @@
 import { CodeRunner } from "~/code/code_runner";
-import { input_to_grid } from "~/code/2021/util";
+import { Coord, Grid, input_to_grid, isBoundary } from "~/code/2021/util";
 
 type Height = number;
 type Risk = number;
-type Coord = { row: number; col: number };
-// represents a grid boundary found in Basin.{up, right, left, down}
-type Boundary = -1;
-const isBoundary = (val: number): boolean => {
-  switch (val) {
-    case -1:
-      return true;
-    default:
-      return false;
-  }
-};
 
-class Basin {
-  readonly rows: number;
-  readonly cols: number;
+class Basin extends Grid {
   readonly heights: Height[];
   readonly risks: Risk[];
   lows: Coord[];
   in_basin: Set<number>;
 
   constructor(rows: number, cols: number, numbers: number[]) {
-    this.rows = rows;
-    this.cols = cols;
+    super(rows, cols);
     this.heights = [...numbers];
     this.risks = this.heights.map((n) => n + 1);
     this.lows = [];
@@ -87,50 +73,6 @@ class Basin {
       .filter((_idx) => !isBoundary(_idx))
       .every((_idx) => this.heights[_idx as number] > this.heights[idx]);
     return is_low_point ? this.risks[idx] : 0;
-  }
-
-  coords(idx: number): Coord {
-    const { cols } = this;
-    const row = Math.floor(idx / cols);
-    const col = idx % cols;
-    return { row, col };
-  }
-
-  idx(row: number, col: number): number {
-    return this.cols * row + col;
-  }
-
-  /*
-   * Each of the methods below computes whether the point in the indicated direction
-   * is larger that the given grid point.
-   *   1. If a point is a boundary, that direction is always considered to be larger, e.g.,
-   *      if we are the top row, then up always returns -1 (type of Boundary).*/
-  up(i: number): number | Boundary {
-    const { row, col } = this.coords(i);
-    const irow = row - 1;
-    if (irow < 0) return -1;
-    return this.idx(irow, col);
-  }
-
-  right(i: number): number | Boundary {
-    const { row, col } = this.coords(i);
-    const icol = col + 1;
-    if (icol > this.cols - 1) return -1;
-    return this.idx(row, icol);
-  }
-
-  down(i: number): number | Boundary {
-    const { row, col } = this.coords(i);
-    const irow = row + 1;
-    if (irow > this.rows - 1) return -1;
-    return this.idx(irow, col);
-  }
-
-  left(i: number): number | Boundary {
-    const { row, col } = this.coords(i);
-    const icol = col - 1;
-    if (icol < 0) return -1;
-    return this.idx(row, icol);
   }
 }
 
