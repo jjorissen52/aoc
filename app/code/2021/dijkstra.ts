@@ -1,5 +1,6 @@
 import { Grid, input_to_grid, isBoundary } from "./util";
 import { CodeRunner, SolutionOutput } from "~/code/code_runner";
+import { HeapQ } from "~/utils/heapq";
 
 const get =
   <K, V>(map: Map<K, V>) =>
@@ -9,79 +10,61 @@ const get =
 const time = (): number => new Date().getTime() / 1000;
 
 class Dijkstra extends Grid {
-  // index corresponding to the starting point
-  readonly start: number;
-  // index corresponding to the destination
-  readonly end: number;
-  // array of "distances"; in this case we can treat the cost to enter the square as its distance
   readonly dist: number[];
-  // set of indices corresponding to unvisited squares
-  private unvisited: Set<number>;
   // record of each visited square and the minimum distance required to reach it
   readonly minimums: Map<number, number>;
   // minimum distance path to each node
-  readonly paths: Map<number, number[]>;
+  readonly paths: Map<number, number>;
+  readonly queue: HeapQ<[number, number]>;
 
   constructor(rows: number, cols: number, numbers: number[]) {
     super(rows, cols);
-    this.start = 0;
-    this.end = numbers.length - 1;
     this.dist = [...numbers];
-    this.unvisited = new Set(numbers.map((_, idx) => idx));
-    // we have visited this.start at zero distance; any other minimum should
-    // default to Infinity until we've seen it as a neighbor at least once
-    this.minimums = new Map(
-      [<[number, number]>[0, 0]].concat(
-        <[number, number][]>(
-          numbers.slice(1).map((_, idx) => [idx + 1, Infinity])
-        )
-      )
-    );
-    this.paths = new Map<number, number[]>([[0, [0]]]);
+    this.minimums = new Map();
+    this.paths = new Map();
+    this.queue = new HeapQ<[number, number]>((a, b) => a[1] < b[1]);
   }
 
-  unvisitedNeighbors(idx: number): number[] {
-    return [this.up(idx), this.right(idx), this.down(idx), this.left(idx)]
-      .filter((neighbor) => !isBoundary(neighbor))
-      .filter((neighbor) => this.unvisited.has(neighbor));
+  neighbors(idx: number): number[] {
+    return [
+      this.up(idx),
+      this.right(idx),
+      this.down(idx),
+      this.left(idx),
+    ].filter((neighbor) => !isBoundary(neighbor));
   }
 
-  travel(): { path: number[]; distance: number } {
-    const max = 100_000;
-    let position = this.start;
-    let count = 0;
-    while (position !== this.end && count < max) {
-      const path = this.paths.get(position) ?? [0];
-      this.unvisited.delete(position);
-      const distanceToPosition = get(this.minimums)(position, Infinity);
-      const neighbors = this.unvisitedNeighbors(position);
-      neighbors.forEach((neighborPosition) => {
+  travel(start: number, end: number): { path: number[]; distance: number } {
+    this.queue.push([start, 0]);
+    this.minimums.set(start, 0);
+    while (this.queue.length > 0) {
+      const [position, distanceToPosition] = this.queue.pop();
+      // only possible if this position ended up in the heap twice
+      if (distanceToPosition > get(this.minimums)(position, Infinity)) continue;
+      this.neighbors(position).forEach((neighborPosition) => {
         const edgeDistance = this.dist[neighborPosition];
         const neighborOldMinimum = get(this.minimums)(
           neighborPosition,
           Infinity
         );
-        const neighborMinimum = Math.min(
-          distanceToPosition + edgeDistance,
-          neighborOldMinimum
-        );
+        const neighborMinimum = distanceToPosition + edgeDistance;
         if (neighborMinimum < neighborOldMinimum) {
-          this.paths.set(neighborPosition, [...path, neighborPosition]);
+          this.paths.set(neighborPosition, position);
           this.minimums.set(neighborPosition, neighborMinimum);
+          this.queue.push([neighborPosition, neighborMinimum]);
         }
       });
-      position =
-        Array.from(this.unvisited)
-          .map((uv) => [uv, get(this.minimums)(uv, Infinity)])
-          .sort((a, b) => {
-            return a[1] < b[1] ? -1 : 1;
-          })[0]?.[0] ?? 0;
-      count += 1;
+      // can stop when we reach the end
+      if (position === end) break;
     }
-    const distance =
-      count === max ? -1 : get(this.minimums)(this.end, Infinity);
+    const distance = get(this.minimums)(end, Infinity);
+    const path = [end];
+    for (let parent = get(this.paths)(end, -1); parent !== -1; ) {
+      path.push(parent);
+      parent = get(this.paths)(parent, -1);
+    }
 
-    return { path: get(this.paths)(this.end, []), distance };
+    return { path: path.reverse(), distance };
   }
 }
 
@@ -97,9 +80,10 @@ const run = (
   if (scale < fontSize) scale = fontSize;
 
   const { rows, cols, numbers } = transform(input_to_grid(input));
+  if (!numbers.length) return "No Input?";
   const dijkstra = new Dijkstra(rows, cols, numbers);
   const computeStart = time();
-  const { path, distance } = dijkstra.travel();
+  const { path, distance } = dijkstra.travel(0, numbers.length - 1);
   const highlights = new Map(path.map((idx) => [idx, "white"]));
   const computeEnd = time();
   const html = dijkstra.svg(numbers, { scale, font: fontSize, highlights });
