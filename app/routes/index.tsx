@@ -1,9 +1,9 @@
 import { Heading } from "~/components/Semantic";
-import { LoaderFunction, useLoaderData } from "remix";
+import { useLoaderData } from "@remix-run/react";
 import { getYears } from "~/utils/file.server";
 import RemixLink from "~/overrides/RemixLink";
 
-export const loader: LoaderFunction = async () => {
+export const loader = async () => {
   const years = await getYears();
   return { years };
 };

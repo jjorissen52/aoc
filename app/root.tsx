@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Scripts, Links, LiveReload, Outlet, useCatch } from "remix";
+import { Links, LiveReload, Outlet, Scripts, useCatch } from "@remix-run/react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { GlobalStyles } from "@mui/material";
 

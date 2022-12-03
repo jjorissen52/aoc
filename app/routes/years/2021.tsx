@@ -1,5 +1,5 @@
 import React from "react";
-import { LoaderFunction, useLoaderData } from "remix";
+import { useLoaderData } from "@remix-run/react";
 import { RunnerOption } from "~/@types/global";
 import { SonarRunner } from "~/code/2021/sonar";
 import { SlidingSonarRunner } from "~/code/2021/sliding_sonar";
@@ -258,7 +258,7 @@ export const runners: RunnerOption[] = [
   },
 ];
 
-export const loader: LoaderFunction = yearLoader(2021, runners);
+export const loader = yearLoader(2021, runners);
 
 export default function Default() {
   const { code } = useLoaderData();
