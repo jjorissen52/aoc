@@ -1,4 +1,3 @@
-import { RunnerOption } from "~/@types/global";
 import { yearLoader } from "~/utils/loaders";
 import { useLoaderData } from "@remix-run/react";
 import CodeFrame from "~/components/CodeFrame";
@@ -7,6 +6,7 @@ import {
   MaxCalorieRunner,
   Top3CalorieRunner,
 } from "~/code/2022/calorie_counting";
+import { RunnerOption } from "~/components/IO";
 
 export const runners: RunnerOption[] = [
   {

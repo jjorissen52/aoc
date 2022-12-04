@@ -11,7 +11,6 @@ export const loader = async () => {
 
 export default function Default() {
   const { years } = useLoaderData();
-  console.log({ years });
   return (
     <Heading
       sx={{

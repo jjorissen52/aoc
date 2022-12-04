@@ -12,7 +12,8 @@ import { useLocalStorage } from "~/utils/hooks";
 export const CodeViewer: React.FunctionComponent<{
   code?: string;
   solution?: SolutionDisplay;
-}> = ({ code, solution }) => {
+  className?: string;
+}> = ({ code, solution, className }) => {
   const [displayMode, setDisplayMode] = useLocalStorage<
     "code" | "html" | "string"
   >("display-mode", "string");
@@ -25,12 +26,17 @@ export const CodeViewer: React.FunctionComponent<{
         : solutionWithNewlines()
       : solutionWithNewlines();
   return (
-    <Column sx={{ fontFamily: "monospace" }}>
+    <Column
+      className={className}
+      sx={{ fontFamily: "monospace", position: "relative" }}
+    >
       <Flex justifyContent={"right"}>
         <ToggleButtonGroup
+          size="small"
           exclusive
           value={displayMode}
           onChange={(ev, mode) => setDisplayMode(mode)}
+          sx={{ position: "absolute", bottom: 5, right: 5 }}
         >
           <ToggleButton value={"string"} aria-label={"string"}>
             <CreateIcon />

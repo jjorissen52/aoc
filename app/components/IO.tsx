@@ -10,8 +10,19 @@ import TextField from "@mui/material/TextField";
 import { Column } from "~/components/Semantic";
 import { useLocalStorage } from "~/utils/hooks";
 import { NoSsr } from "@mui/material";
-import { RunnerOption } from "~/@types/global";
-import { SolutionDisplay, SolutionOutput } from "~/code/code_runner";
+import {
+  CodeRunner,
+  SolutionDisplay,
+  SolutionOutput,
+} from "~/code/code_runner";
+
+export type RunnerOption = {
+  day: number;
+  title: string;
+  file: string;
+  runner: CodeRunner;
+  auxInputs?: { name: string; default: string }[];
+};
 
 export type IOProps = {
   year: number;
@@ -19,6 +30,7 @@ export type IOProps = {
   onSelectRunner?: (value: RunnerOption | null) => void;
   onSelectDay?: (day: number) => void;
   onOutput?: (solution: SolutionDisplay) => void;
+  className?: string;
 };
 
 const _ = (str: string) => new SolutionOutput(str);
@@ -29,6 +41,7 @@ export const IO: React.FunctionComponent<IOProps> = ({
   onSelectRunner,
   onSelectDay,
   onOutput,
+  className,
 }) => {
   type State = {
     input: string;
@@ -109,41 +122,46 @@ export const IO: React.FunctionComponent<IOProps> = ({
   };
 
   return (
-    <Column sx={{ display: "flex", flexDirection: "column" }}>
+    <Column
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+      className={className}
+    >
       <NoSsr>
-        <Box sx={{ minHeight: "300px" }}>
-          <Box
-            width={1}
-            mt={2}
-            mb={2}
-            pl={2}
-            pr={2}
-            sx={{
-              boxSizing: "border-box",
-              overflow: "hidden",
-              flexBasis: "100px",
+        <Box>
+          <TextField
+            sx={{ width: "100%" }}
+            label="Input"
+            placeholder="Input"
+            variant={"filled"}
+            value={input}
+            onChange={_onChangeInput}
+            InputProps={{
+              style: {
+                fontFamily: "Roboto Mono, monospace",
+              },
             }}
-          >
-            <Typography id="input-slider" gutterBottom>
-              Select a Day
-            </Typography>
-            <Slider
-              aria-label="Restricted values"
-              value={day}
-              onChange={(e) =>
-                _onSelectDay(
-                  e as unknown as React.ChangeEvent<HTMLInputElement>
-                )
-              }
-              step={null}
-              min={1}
-              max={Math.max(...runners.map((r) => r.day))}
-              valueLabelDisplay="auto"
-              marks={Array(Math.max(...runners.map((r) => r.day)))
-                .fill(1)
-                .map((num, idx) => ({ value: num + idx, label: num + idx }))}
-            />
-          </Box>
+          />
+          <TextField
+            sx={{ width: "100%" }}
+            minRows={25}
+            label="Output"
+            placeholder="Output"
+            multiline
+            variant={"filled"}
+            value={String(output)}
+            InputProps={{
+              readOnly: true,
+              style: {
+                fontFamily: "Roboto Mono, monospace",
+              },
+            }}
+          />
+        </Box>
+        <Box>
           <Box
             width={1}
             mt={2}
@@ -201,41 +219,36 @@ export const IO: React.FunctionComponent<IOProps> = ({
               ))}
             </Box>
           )}
-        </Box>
-        <Box sx={{ display: "flex", flexFlow: "row" }}>
-          <Box width={1 / 2} sx={{ height: "100%", margin: "8px 8px 8px 8px" }}>
-            <TextField
-              sx={{ width: "100%" }}
-              minRows={25}
-              maxRows={25}
-              label="Input"
-              placeholder="Input"
-              multiline
-              variant={"filled"}
-              value={input}
-              onChange={_onChangeInput}
-              InputProps={{
-                style: {
-                  fontFamily: "Roboto Mono, monospace",
-                },
-              }}
-            />
-          </Box>
-          <Box width={1 / 2} sx={{ height: "100%", margin: "8px 8px 8px 8px" }}>
-            <TextField
-              sx={{ width: "100%" }}
-              minRows={25}
-              label="Output"
-              placeholder="Output"
-              multiline
-              variant={"filled"}
-              value={String(output)}
-              InputProps={{
-                readOnly: true,
-                style: {
-                  fontFamily: "Roboto Mono, monospace",
-                },
-              }}
+          <Box
+            width={1}
+            mt={2}
+            mb={2}
+            pl={2}
+            pr={2}
+            sx={{
+              boxSizing: "border-box",
+              overflow: "hidden",
+              flexBasis: "100px",
+            }}
+          >
+            <Typography id="input-slider" gutterBottom>
+              Select a Day
+            </Typography>
+            <Slider
+              aria-label="Restricted values"
+              value={day}
+              onChange={(e) =>
+                _onSelectDay(
+                  e as unknown as React.ChangeEvent<HTMLInputElement>
+                )
+              }
+              step={null}
+              min={1}
+              max={Math.max(...runners.map((r) => r.day))}
+              valueLabelDisplay="auto"
+              marks={Array(Math.max(...runners.map((r) => r.day)))
+                .fill(1)
+                .map((num, idx) => ({ value: num + idx, label: num + idx }))}
             />
           </Box>
         </Box>

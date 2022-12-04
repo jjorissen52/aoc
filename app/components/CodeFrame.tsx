@@ -1,20 +1,25 @@
 import React from "react";
-import { RunnerOption } from "~/@types/global";
 import { Flex } from "~/components/Semantic";
-import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import { IO } from "~/components/IO";
+import { IO, RunnerOption } from "~/components/IO";
 import { CodeViewer } from "~/components/CodeViewer";
 import Typography from "@mui/material/Typography";
 import { SolutionDisplay } from "~/code/code_runner";
+
+import { styled } from "@mui/material/styles";
 
 type CodeFrameProps = {
   year: number;
   runners: RunnerOption[];
   code: Record<string, string>;
+  className?: string;
 };
-export default function CodeFrame({ code, year, runners }: CodeFrameProps) {
+export default styled(function ({
+  code,
+  year,
+  runners,
+  className,
+}: CodeFrameProps) {
   const [runner, setRunner] = React.useState<RunnerOption | null>(null);
   const [solution, setSolution] = React.useState<SolutionDisplay | undefined>(
     undefined
@@ -27,17 +32,22 @@ export default function CodeFrame({ code, year, runners }: CodeFrameProps) {
     setDay(_day);
   };
   return (
-    <Box mt={3} sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2} sx={{ overflow: "hidden" }}>
+    <div className={className}>
+      <div className="panels">
         <IO
+          className="io"
           year={year}
           runners={runners}
           onSelectRunner={setRunner}
           onSelectDay={onSelectDay}
           onOutput={setSolution}
         />
-        <CodeViewer code={selectedCode} solution={solution} />
-      </Grid>
+        <CodeViewer
+          className="viewer"
+          code={selectedCode}
+          solution={solution}
+        />
+      </div>
       <Flex
         sx={{
           position: "absolute",
@@ -54,6 +64,21 @@ export default function CodeFrame({ code, year, runners }: CodeFrameProps) {
           </Link>
         </Typography>
       </Flex>
-    </Box>
+    </div>
   );
-}
+})(() => ({
+  ".panels": {
+    display: "flex",
+    flexDirection: "row",
+    ".io": {
+      flex: "1 1 50rem",
+      minWidth: "30rem",
+    },
+    ".viewer": {
+      flex: "1 1 100rem",
+    },
+  },
+  ".okay": {
+    color: "blue",
+  },
+}));

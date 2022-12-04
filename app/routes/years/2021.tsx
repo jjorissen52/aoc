@@ -1,6 +1,5 @@
 import React from "react";
 import { useLoaderData } from "@remix-run/react";
-import { RunnerOption } from "~/@types/global";
 import { SonarRunner } from "~/code/2021/sonar";
 import { SlidingSonarRunner } from "~/code/2021/sliding_sonar";
 import { DiveRunner } from "~/code/2021/dive";
@@ -21,6 +20,7 @@ import { PathRunner } from "~/code/2021/pathing";
 import { Origami } from "~/code/2021/origami";
 import { FastPolymerizer, SlowPolymerizer } from "~/code/2021/polymerization";
 import { BigDijkstraRunner, DijkstraRunner } from "~/code/2021/dijkstra";
+import { RunnerOption } from "~/components/IO";
 
 export const runners: RunnerOption[] = [
   {

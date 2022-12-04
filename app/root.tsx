@@ -3,6 +3,7 @@ import React from "react";
 import { Links, LiveReload, Outlet, Scripts, useCatch } from "@remix-run/react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { GlobalStyles } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
 
 const darkTheme = createTheme({
   palette: {
@@ -22,11 +23,12 @@ function Document({
       <head>
         <meta charSet="utf-8" />
         <title>{title}</title>
-      </head>
-      <body>
         <Links />
         <Scripts />
+      </head>
+      <body>
         <ThemeProvider theme={darkTheme}>
+          <CssBaseline />
           <GlobalStyles
             styles={{
               body: {
@@ -36,7 +38,6 @@ function Document({
             }}
           />
           {process.env.NODE_ENV === "development" ? <LiveReload /> : null}
-
           {children}
         </ThemeProvider>
       </body>
