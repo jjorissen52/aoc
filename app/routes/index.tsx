@@ -1,7 +1,8 @@
 import { Heading } from "~/components/Semantic";
 import { useLoaderData } from "@remix-run/react";
 import { getYears } from "~/utils/file.server";
-import RemixLink from "~/overrides/RemixLink";
+import { Link } from "@remix-run/react";
+import MuiLink from "@mui/material/Link";
 
 export const loader = async () => {
   const years = await getYears();
@@ -10,6 +11,7 @@ export const loader = async () => {
 
 export default function Default() {
   const { years } = useLoaderData();
+  console.log({ years });
   return (
     <Heading
       sx={{
@@ -22,7 +24,9 @@ export default function Default() {
       <ul>
         {years.map((year: number) => (
           <li key={year}>
-            <RemixLink to={`/years/${year}`}>{year}</RemixLink>
+            <MuiLink component={Link} to={`/years/${year}`}>
+              {year}
+            </MuiLink>
           </li>
         ))}
       </ul>

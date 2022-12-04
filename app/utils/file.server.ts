@@ -17,6 +17,6 @@ export async function readAll(...files: string[]) {
 
 export async function getYears() {
   return (await fs.readdir(path.join(__dirname, "..", "app", "code")))
-    .map(parseInt)
+    .map((y) => parseInt(y))
     .filter((y) => !isNaN(y)) as number[];
 }

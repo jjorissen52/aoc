@@ -1,5 +1,4 @@
-import React from "react";
-import { runners } from "~/routes/years/2021";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Slider from "@mui/material/Slider";
@@ -15,14 +14,18 @@ import { RunnerOption } from "~/@types/global";
 import { SolutionDisplay, SolutionOutput } from "~/code/code_runner";
 
 export type IOProps = {
+  year: number;
+  runners: RunnerOption[];
   onSelectRunner?: (value: RunnerOption | null) => void;
-  onSelectDay?: (day: number, link: string) => void;
+  onSelectDay?: (day: number) => void;
   onOutput?: (solution: SolutionDisplay) => void;
 };
 
 const _ = (str: string) => new SolutionOutput(str);
 
 export const IO: React.FunctionComponent<IOProps> = ({
+  year,
+  runners,
   onSelectRunner,
   onSelectDay,
   onOutput,
@@ -32,16 +35,18 @@ export const IO: React.FunctionComponent<IOProps> = ({
     auxInput: string[];
     day: number;
     selectedRunner: string | null;
-    filteredRunners: string[];
   };
 
-  const [storedState, setStoredState] = useLocalStorage("aoc", {
+  const [storedState, setStoredState] = useLocalStorage(`aoc-${year}`, {
     input: "",
     auxInput: [],
     day: 1,
     selectedRunner: null,
-    filteredRunners: runners.filter((r) => r.day === 1).map((r) => r.title),
-  } as Omit<State, "output">);
+  } as State);
+
+  const [filteredRunners, setFilteredRunners] = useState(() =>
+    runners.filter((r) => r.day === storedState.day).map((r) => r.title)
+  );
 
   const [output, setOutput] = React.useState<SolutionDisplay>(_("..."));
   const [state, setState] = React.useReducer(
@@ -51,8 +56,8 @@ export const IO: React.FunctionComponent<IOProps> = ({
     }),
     storedState
   );
+  const { input, day, selectedRunner } = state;
 
-  const { input, day, selectedRunner, filteredRunners } = state;
   const runnerObject = runners.find((r) => r.title === selectedRunner);
   const auxInput =
     state.auxInput ?? Array(runnerObject?.auxInputs?.length ?? 0).fill("");
@@ -69,13 +74,12 @@ export const IO: React.FunctionComponent<IOProps> = ({
     computeOutput(input, auxInput);
     const runner = runners.find((r) => r.title === selectedRunner);
     onSelectRunner && onSelectRunner(runner ?? null);
-    onSelectDay && onSelectDay(day, runner?.link ?? "");
+    onSelectDay && onSelectDay(day);
     setStoredState({
       input,
       auxInput,
       day,
       selectedRunner,
-      filteredRunners,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [input, auxInput, selectedRunner, day]);
@@ -88,8 +92,8 @@ export const IO: React.FunctionComponent<IOProps> = ({
     setState({
       day,
       selectedRunner: filteredRunners?.[0] ?? null,
-      filteredRunners,
     });
+    setFilteredRunners(filteredRunners);
   };
 
   const _onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {

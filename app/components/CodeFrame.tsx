@@ -10,26 +10,28 @@ import Typography from "@mui/material/Typography";
 import { SolutionDisplay } from "~/code/code_runner";
 
 type CodeFrameProps = {
+  year: number;
+  runners: RunnerOption[];
   code: Record<string, string>;
 };
-export default function CodeFrame({ code }: CodeFrameProps) {
+export default function CodeFrame({ code, year, runners }: CodeFrameProps) {
   const [runner, setRunner] = React.useState<RunnerOption | null>(null);
   const [solution, setSolution] = React.useState<SolutionDisplay | undefined>(
     undefined
   );
   const [day, setDay] = React.useState<number>(1);
-  const [link, setLink] = React.useState("");
 
   const selectedCode = runner && runner.title ? code[runner.title] : "";
 
-  const onSelectDay = (_day: number, _link: string) => {
+  const onSelectDay = (_day: number) => {
     setDay(_day);
-    setLink(_link);
   };
   return (
     <Box mt={3} sx={{ flexGrow: 1 }}>
       <Grid container spacing={2} sx={{ overflow: "hidden" }}>
         <IO
+          year={year}
+          runners={runners}
           onSelectRunner={setRunner}
           onSelectDay={onSelectDay}
           onOutput={setSolution}
@@ -47,7 +49,9 @@ export default function CodeFrame({ code }: CodeFrameProps) {
         }}
       >
         <Typography variant={"h5"}>
-          <Link href={link}>Day {day}</Link>
+          <Link href={`https://adventofcode.com/${year}/day/${day}`}>
+            Day {day}
+          </Link>
         </Typography>
       </Flex>
     </Box>

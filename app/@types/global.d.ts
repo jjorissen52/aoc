@@ -12,7 +12,6 @@ declare type RunnerOption = {
   day: number;
   title: string;
   file: string;
-  link: string;
   runner: CodeRunner;
   auxInputs?: { name: string; default: string }[];
 };

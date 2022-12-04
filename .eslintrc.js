@@ -41,5 +41,6 @@ module.exports = {
       '@typescript-eslint/lines-between-class-members': 'off',
       '@typescript-eslint/no-loop-func': 'off',
       '@typescript-eslint/no-use-before-define': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   };
