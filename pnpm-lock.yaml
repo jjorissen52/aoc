@@ -15,6 +15,7 @@ specifiers:
   '@testing-library/user-event': ^12.8.3
   '@types/figlet': ^1.5.5
   '@types/jest': ^26.0.24
+  '@types/lodash': ^4.14.191
   '@types/node': ^16.18.4
   '@types/react': ^17.0.52
   '@types/react-dom': ^17.0.18
@@ -37,6 +38,7 @@ specifiers:
   eslint-plugin-react-hooks: ^4.6.0
   figlet: ^1.5.2
   install: ^0.13.0
+  lodash: ^4.17.21
   prettier: ^2.8.0
   prisma: ^3.15.2
   raw.macro: ^0.4.2
@@ -61,6 +63,7 @@ dependencies:
   '@testing-library/user-event': 12.8.3_aaq3sbffpfe3jnxzm2zngsddei
   '@types/figlet': 1.5.5
   '@types/jest': 26.0.24
+  '@types/lodash': 4.14.191
   '@types/node': 16.18.4
   '@types/react': 17.0.52
   '@types/react-dom': 17.0.18
@@ -69,6 +72,7 @@ dependencies:
   commander: 8.3.0
   figlet: 1.5.2
   install: 0.13.0
+  lodash: 4.17.21
   raw.macro: 0.4.2
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
@@ -3688,6 +3692,10 @@ packages:
     dependencies:
       '@types/node': 16.18.4
     dev: true
+
+  /@types/lodash/4.14.191:
+    resolution: {integrity: sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==}
+    dev: false
 
   /@types/mdast/3.0.10:
     resolution: {integrity: sha512-W864tg/Osz1+9f4lrGTZpCSO5/z4608eUp19tbozkq2HJK6i3z1kT0H9tlADXuYIb1YYOBByU4Jsqkk75q48qA==}

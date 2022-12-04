@@ -94,12 +94,26 @@ const doOrigami = (input: string): Paper => {
   );
 };
 
-export const Origami = new CodeRunner((input: string, ...auxInput) => {
-  const sizeScale = !isNaN(parseInt(auxInput[0])) ? parseInt(auxInput[0]) : 10;
-  const dotScale = !isNaN(parseInt(auxInput[1])) ? parseInt(auxInput[1]) : 10;
-  const paper = doOrigami(input);
-  return new SolutionOutput(
-    `${Array.from(paper.marks).length}:\n${paper.display()}`,
-    paper.html(sizeScale, dotScale)
-  );
-});
+export const Origami = new CodeRunner(
+  (input: string, ...auxInput) => {
+    const sizeScale = !isNaN(parseInt(auxInput[0]))
+      ? parseInt(auxInput[0])
+      : 10;
+    const dotScale = !isNaN(parseInt(auxInput[1])) ? parseInt(auxInput[1]) : 10;
+    const paper = doOrigami(input);
+    return new SolutionOutput(
+      `${Array.from(paper.marks).length}:\n${paper.display()}`,
+      paper.html(sizeScale, dotScale)
+    );
+  },
+  2021,
+  {
+    day: 13,
+    title: "Origami",
+    file: "origami",
+    auxInputs: [
+      { name: "Size Scale", default: "10" },
+      { name: "Dot Scale", default: "10" },
+    ],
+  }
+);

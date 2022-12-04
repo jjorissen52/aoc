@@ -57,7 +57,15 @@ export const input_to_vectors = (input: string): Vector[] =>
       return isDirection(direction) && !isNaN(magnitude);
     }) as Vector[];
 
-export const DiveRunner = new CodeRunner((input: string) => {
-  const as_vectors = input_to_vectors(input);
-  return String(new Submarine().dive(as_vectors));
-});
+export const DiveRunner = new CodeRunner(
+  (input: string) => {
+    const as_vectors = input_to_vectors(input);
+    return String(new Submarine().dive(as_vectors));
+  },
+  2021,
+  {
+    day: 2,
+    title: "Dive",
+    file: "dive",
+  }
+);

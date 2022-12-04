@@ -133,20 +133,36 @@ export const CountFlashRunner = new CodeRunner(
       total_flashes += grid.tick();
     }
     return String(total_flashes);
+  },
+  2021,
+  {
+    day: 11,
+    title: "Count Flash",
+    file: "octopi",
+    auxInputs: [{ name: "Steps", default: "100" }],
   }
 );
 
-export const SyncFlashRunner = new CodeRunner((input: string, maxStepInput) => {
-  const maxSteps = !isNaN(parseInt(maxStepInput))
-    ? parseInt(maxStepInput)
-    : 10_000;
-  const grid = build(input);
-  let step = 1;
-  let flashes = grid.tick();
-  while (flashes < grid.energy.length && step < maxSteps) {
-    flashes = grid.tick();
-    console.log(flashes);
-    step += 1;
+export const SyncFlashRunner = new CodeRunner(
+  (input: string, maxStepInput) => {
+    const maxSteps = !isNaN(parseInt(maxStepInput))
+      ? parseInt(maxStepInput)
+      : 10_000;
+    const grid = build(input);
+    let step = 1;
+    let flashes = grid.tick();
+    while (flashes < grid.energy.length && step < maxSteps) {
+      flashes = grid.tick();
+      console.log(flashes);
+      step += 1;
+    }
+    return String(step);
+  },
+  2021,
+  {
+    day: 11,
+    title: "Sync Flash",
+    file: "octopi",
+    auxInputs: [{ name: "Max Steps", default: "10000" }],
   }
-  return String(step);
-});
+);

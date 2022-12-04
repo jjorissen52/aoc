@@ -23,9 +23,9 @@ export const runners: RunnerOption[] = [
   },
 ];
 
-export const loader = yearLoader(2022, runners);
+export const loader = yearLoader(runners);
 
 export default function Default() {
-  const { code } = useLoaderData();
-  return <CodeFrame code={code} year={2022} runners={runners} />;
+  const { year, code } = useLoaderData();
+  return <CodeFrame code={code} year={year} runners={runners} />;
 }

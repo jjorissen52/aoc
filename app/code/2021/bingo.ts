@@ -118,18 +118,34 @@ const on_second_thought = (numbers: number[], _boards: number[][]): number => {
   return boards[turns_to_win.indexOf(Math.max(...turns_to_win))].score;
 };
 
-export const BingoRunner = new CodeRunner((input) => {
-  const [_numbers, ..._boards] = input.split("\n\n");
-  const numbers = input_to_numbers(_numbers, ",");
-  const boards = _boards.map((board) => input_to_numbers(board));
+export const BingoRunner = new CodeRunner(
+  (input) => {
+    const [_numbers, ..._boards] = input.split("\n\n");
+    const numbers = input_to_numbers(_numbers, ",");
+    const boards = _boards.map((board) => input_to_numbers(board));
 
-  return String(bingo(numbers, boards));
-});
+    return String(bingo(numbers, boards));
+  },
+  2021,
+  {
+    day: 4,
+    title: "Bingo",
+    file: "bingo",
+  }
+);
 
-export const BadBingoRunner = new CodeRunner((input) => {
-  const [_numbers, ..._boards] = input.split("\n\n");
-  const numbers = input_to_numbers(_numbers, ",");
-  const boards = _boards.map((board) => input_to_numbers(board));
+export const BadBingoRunner = new CodeRunner(
+  (input) => {
+    const [_numbers, ..._boards] = input.split("\n\n");
+    const numbers = input_to_numbers(_numbers, ",");
+    const boards = _boards.map((board) => input_to_numbers(board));
 
-  return String(on_second_thought(numbers, boards));
-});
+    return String(on_second_thought(numbers, boards));
+  },
+  2021,
+  {
+    day: 4,
+    title: "Bad Bingo",
+    file: "bingo",
+  }
+);

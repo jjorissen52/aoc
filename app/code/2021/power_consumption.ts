@@ -82,11 +82,19 @@ const power_consumption = (input: string[]): number => {
   return epsilon(input) * gamma(input);
 };
 
-export const PowerConsumptionRunner = new CodeRunner((input: string) => {
-  const as_digits = input
-    .split(/\s+/)
-    .map((word) => word.match(/([0-9]+)/g)?.[0] ?? "")
-    .filter((digits) => !isNaN(parseInt(digits, 2)));
+export const PowerConsumptionRunner = new CodeRunner(
+  (input: string) => {
+    const as_digits = input
+      .split(/\s+/)
+      .map((word) => word.match(/([0-9]+)/g)?.[0] ?? "")
+      .filter((digits) => !isNaN(parseInt(digits, 2)));
 
-  return String(power_consumption(as_digits));
-});
+    return String(power_consumption(as_digits));
+  },
+  2021,
+  {
+    day: 3,
+    title: "Power Consumption",
+    file: "power_consumption",
+  }
+);

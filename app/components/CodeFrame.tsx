@@ -7,19 +7,14 @@ import Typography from "@mui/material/Typography";
 import { SolutionDisplay } from "~/code/code_runner";
 
 import { styled } from "@mui/material/styles";
+import { NoSsr } from "@mui/material";
 
-type CodeFrameProps = {
+export type CodeFrameProps = {
   year: number;
-  runners: RunnerOption[];
   code: Record<string, string>;
   className?: string;
 };
-export default styled(function ({
-  code,
-  year,
-  runners,
-  className,
-}: CodeFrameProps) {
+export default styled(function ({ code, year, className }: CodeFrameProps) {
   const [runner, setRunner] = React.useState<RunnerOption | null>(null);
   const [solution, setSolution] = React.useState<SolutionDisplay | undefined>(
     undefined
@@ -34,14 +29,15 @@ export default styled(function ({
   return (
     <div className={className}>
       <div className="panels">
-        <IO
-          className="io"
-          year={year}
-          runners={runners}
-          onSelectRunner={setRunner}
-          onSelectDay={onSelectDay}
-          onOutput={setSolution}
-        />
+        <NoSsr>
+          <IO
+            className="io"
+            year={year}
+            onSelectRunner={setRunner}
+            onSelectDay={onSelectDay}
+            onOutput={setSolution}
+          />
+        </NoSsr>
         <CodeViewer
           className="viewer"
           code={selectedCode}

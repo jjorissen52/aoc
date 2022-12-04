@@ -96,31 +96,43 @@ const expandPairs = (pairs: Pair[]): Pair[] => {
   }, <Pair[]>[]);
 };
 
-export const PathRunner = new CodeRunner((input: string, ...auxInput) => {
-  const smallRoomLimit = predicateDefault(
-    parseInt(auxInput[0]),
-    (v) => v === v,
-    1
-  );
-  const smallRoomBuff = predicateDefault(
-    Boolean(parseInt(auxInput[1])),
-    (v) => v === v,
-    false
-  );
+export const PathRunner = new CodeRunner(
+  (input: string, ...auxInput) => {
+    const smallRoomLimit = predicateDefault(
+      parseInt(auxInput[0]),
+      (v) => v === v,
+      1
+    );
+    const smallRoomBuff = predicateDefault(
+      Boolean(parseInt(auxInput[1])),
+      (v) => v === v,
+      false
+    );
 
-  const pairs = <Pair[]>input
-    .split("\n")
-    .map((line) => line.split("-"))
-    .filter((line) => line.length === 2);
-  const pathDescriptions = expandPairs(pairs);
-  const { traverse, paths } = traverser(
-    pathDescriptions,
-    smallRoomLimit,
-    smallRoomBuff
-  );
-  traverse();
-  const goodPaths = paths
-    .filter((p) => p[p.length - 1] === "end")
-    .map((p) => p.join(" "));
-  return `${goodPaths.length}:\n${goodPaths.join("\n")}`;
-});
+    const pairs = <Pair[]>input
+      .split("\n")
+      .map((line) => line.split("-"))
+      .filter((line) => line.length === 2);
+    const pathDescriptions = expandPairs(pairs);
+    const { traverse, paths } = traverser(
+      pathDescriptions,
+      smallRoomLimit,
+      smallRoomBuff
+    );
+    traverse();
+    const goodPaths = paths
+      .filter((p) => p[p.length - 1] === "end")
+      .map((p) => p.join(" "));
+    return `${goodPaths.length}:\n${goodPaths.join("\n")}`;
+  },
+  2021,
+  {
+    day: 12,
+    title: "Pathing",
+    file: "pathing",
+    auxInputs: [
+      { name: "Small Room Limit", default: "1" },
+      { name: "Small Room Buff", default: "0" },
+    ],
+  }
+);

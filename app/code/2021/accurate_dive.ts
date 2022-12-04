@@ -26,7 +26,15 @@ class AccurateSubmarine extends Submarine {
   }
 }
 
-export const AccurateDiveRunner = new CodeRunner((input: string) => {
-  const as_vectors = input_to_vectors(input);
-  return String(new AccurateSubmarine().dive(as_vectors));
-});
+export const AccurateDiveRunner = new CodeRunner(
+  (input: string) => {
+    const as_vectors = input_to_vectors(input);
+    return String(new AccurateSubmarine().dive(as_vectors));
+  },
+  2021,
+  {
+    day: 2,
+    title: "Accurate Dive",
+    file: "accurate_dive",
+  }
+);

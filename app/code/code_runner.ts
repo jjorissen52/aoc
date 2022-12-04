@@ -1,3 +1,5 @@
+import { RunnerOption } from "~/components/IO";
+
 export interface SolutionDisplay {
   toString(): string;
   toHTML(): string;
@@ -23,11 +25,19 @@ export class SolutionOutput implements SolutionDisplay {
   }
 }
 
+export const RUNNER_MAP: Record<number, RunnerOption[]> = {};
 export class CodeRunner {
   func: Solution;
 
-  constructor(func: Solution) {
+  constructor(
+    func: Solution,
+    year: number,
+    { day, title, file, auxInputs }: Omit<RunnerOption, "runner">
+  ) {
     this.func = func.bind(this);
+    const asOption = { day, title, file, auxInputs, runner: this };
+    if (RUNNER_MAP[year]) RUNNER_MAP[year].push(asOption);
+    else RUNNER_MAP[year] = [asOption];
   }
 
   run(input: string, ...auxInput: string[]): SolutionDisplay {

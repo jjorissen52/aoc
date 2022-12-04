@@ -92,10 +92,18 @@ const life_support = (input: string[]): number => {
   return oxygen(input) * co2_scrubber(input);
 };
 
-export const LifeSupportRunner = new CodeRunner((input: string) => {
-  const as_digits = input
-    .split(/\s+/)
-    .map((word) => word.match(/([0-9]+)/g)?.[0] ?? "")
-    .filter((digits) => !isNaN(parseInt(digits, 2)));
-  return String(life_support(as_digits));
-});
+export const LifeSupportRunner = new CodeRunner(
+  (input: string) => {
+    const as_digits = input
+      .split(/\s+/)
+      .map((word) => word.match(/([0-9]+)/g)?.[0] ?? "")
+      .filter((digits) => !isNaN(parseInt(digits, 2)));
+    return String(life_support(as_digits));
+  },
+  2021,
+  {
+    day: 3,
+    title: "Life Support",
+    file: "life_support",
+  }
+);

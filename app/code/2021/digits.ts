@@ -79,40 +79,56 @@ const clean = (input: string) =>
       { codes: [] as string[], outputs: [] as string[] }
     );
 
-export const SimpleDigitRunner = new CodeRunner((input) => {
-  const { codes, outputs } = clean(input);
-  let count = 0;
-  for (let idx = 0; idx < codes.length; idx++) {
-    const _ = map_digits(codes[idx].split(" "));
-    outputs[idx].split(" ").forEach((output) => {
-      if (same_as(_[1])(output)) count += 1;
-      if (same_as(_[4])(output)) count += 1;
-      if (same_as(_[7])(output)) count += 1;
-      if (same_as(_[8])(output)) count += 1;
-    });
+export const SimpleDigitRunner = new CodeRunner(
+  (input) => {
+    const { codes, outputs } = clean(input);
+    let count = 0;
+    for (let idx = 0; idx < codes.length; idx++) {
+      const _ = map_digits(codes[idx].split(" "));
+      outputs[idx].split(" ").forEach((output) => {
+        if (same_as(_[1])(output)) count += 1;
+        if (same_as(_[4])(output)) count += 1;
+        if (same_as(_[7])(output)) count += 1;
+        if (same_as(_[8])(output)) count += 1;
+      });
+    }
+    return String(count);
+  },
+  2021,
+  {
+    day: 8,
+    title: "Easy Digits",
+    file: "digits",
   }
-  return String(count);
-});
+);
 
-export const FullDigitRunner = new CodeRunner((input) => {
-  const { codes, outputs } = clean(input);
-  let sum = 0;
-  for (let idx = 0; idx < codes.length; idx++) {
-    let num = "";
-    const _ = map_digits(codes[idx].split(" "));
-    outputs[idx].split(" ").forEach((output) => {
-      if (same_as(_[0])(output)) num += "0";
-      if (same_as(_[1])(output)) num += "1";
-      if (same_as(_[2])(output)) num += "2";
-      if (same_as(_[3])(output)) num += "3";
-      if (same_as(_[4])(output)) num += "4";
-      if (same_as(_[5])(output)) num += "5";
-      if (same_as(_[6])(output)) num += "6";
-      if (same_as(_[7])(output)) num += "7";
-      if (same_as(_[8])(output)) num += "8";
-      if (same_as(_[9])(output)) num += "9";
-    });
-    sum += Number(num);
+export const FullDigitRunner = new CodeRunner(
+  (input) => {
+    const { codes, outputs } = clean(input);
+    let sum = 0;
+    for (let idx = 0; idx < codes.length; idx++) {
+      let num = "";
+      const _ = map_digits(codes[idx].split(" "));
+      outputs[idx].split(" ").forEach((output) => {
+        if (same_as(_[0])(output)) num += "0";
+        if (same_as(_[1])(output)) num += "1";
+        if (same_as(_[2])(output)) num += "2";
+        if (same_as(_[3])(output)) num += "3";
+        if (same_as(_[4])(output)) num += "4";
+        if (same_as(_[5])(output)) num += "5";
+        if (same_as(_[6])(output)) num += "6";
+        if (same_as(_[7])(output)) num += "7";
+        if (same_as(_[8])(output)) num += "8";
+        if (same_as(_[9])(output)) num += "9";
+      });
+      sum += Number(num);
+    }
+    return String(sum);
+  },
+  2021,
+  {
+    day: 8,
+    title: "Full Digits",
+    file: "digits",
   }
-  return String(sum);
-});
+);

@@ -26,18 +26,34 @@ const minimum_cost = (numbers: number[], cost: CostFunction): number => {
   return min;
 };
 
-export const CrabRunner = new CodeRunner((input: string) => {
-  const as_numbers = input
-    .split(",")
-    .map((n) => parseInt(n))
-    .filter((n) => !isNaN(n));
-  return String(minimum_cost(as_numbers, simple_cost));
-});
+export const CrabRunner = new CodeRunner(
+  (input: string) => {
+    const as_numbers = input
+      .split(",")
+      .map((n) => parseInt(n))
+      .filter((n) => !isNaN(n));
+    return String(minimum_cost(as_numbers, simple_cost));
+  },
+  2021,
+  {
+    day: 7,
+    title: "Crabs",
+    file: "crabs",
+  }
+);
 
-export const ComplexCrabRunner = new CodeRunner((input: string) => {
-  const as_numbers = input
-    .split(",")
-    .map((n) => parseInt(n))
-    .filter((n) => !isNaN(n));
-  return String(minimum_cost(as_numbers, complex_cost));
-});
+export const ComplexCrabRunner = new CodeRunner(
+  (input: string) => {
+    const as_numbers = input
+      .split(",")
+      .map((n) => parseInt(n))
+      .filter((n) => !isNaN(n));
+    return String(minimum_cost(as_numbers, complex_cost));
+  },
+  2021,
+  {
+    day: 7,
+    title: "Complex Crabs",
+    file: "crabs",
+  }
+);

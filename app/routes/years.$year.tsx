@@ -9,14 +9,12 @@ import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import { Outlet, useMatches } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
+import { yearLoader } from "~/utils/loaders";
+import CodeFrame from "~/components/CodeFrame";
 
 export default function PermanentDrawerRight() {
-  const routeMatches = useMatches();
-  const year =
-    routeMatches[routeMatches.length - 1].pathname.match(/(\d{4})/)?.[1] ??
-    null;
-  console.log({ year });
+  const { year, code } = useLoaderData();
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -26,7 +24,7 @@ export default function PermanentDrawerRight() {
       >
         <Toolbar>
           <Typography variant="h6" noWrap component="div">
-            Advent of Code
+            Advent of Code | {year}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -34,7 +32,7 @@ export default function PermanentDrawerRight() {
         component="main"
         sx={{ flexGrow: 1, bgcolor: "background.default", mt: 6 }}
       >
-        <Outlet />
+        <CodeFrame code={code} year={year} />
       </Box>
       <Drawer
         sx={{
@@ -51,7 +49,7 @@ export default function PermanentDrawerRight() {
         <Toolbar />
         <Divider />
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text) => (
+          {[2021, 2022].map((text) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>
                 <ListItemText primary={text} />
@@ -73,3 +71,5 @@ export default function PermanentDrawerRight() {
     </Box>
   );
 }
+
+export const loader = yearLoader();

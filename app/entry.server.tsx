@@ -1,6 +1,9 @@
 import { renderToString } from "react-dom/server";
 import { type EntryContext } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
+import { watch } from "fs/promises";
+import { appPath } from "~/utils/file.server";
+import { generateCodeRunnerExports } from "~/utils/codegen.server";
 
 export default function handleRequest(
   request: Request,
@@ -19,3 +22,17 @@ export default function handleRequest(
     headers: responseHeaders,
   });
 }
+
+(async () => {
+  try {
+    const watcher = watch(appPath("code"), { recursive: true });
+    for await (const event of watcher) {
+      if (!event.filename.endsWith("init.ts"))
+        console.log(generateCodeRunnerExports(appPath("code", "init.ts")));
+    }
+  } catch (err) {
+    // @ts-ignore
+    if (err?.name === "AbortError") return;
+    throw err;
+  }
+})();

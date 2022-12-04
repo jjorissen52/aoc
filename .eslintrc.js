@@ -17,7 +17,8 @@ module.exports = {
       SharedArrayBuffer: 'readonly',
     },
     parser: '@typescript-eslint/parser',
-    parserOptions: {
+  ignorePatterns: ["remix.config.js", ".eslintrc.js"],
+  parserOptions: {
       ecmaFeatures: {
         jsx: true,
       },
@@ -42,5 +43,6 @@ module.exports = {
       '@typescript-eslint/no-loop-func': 'off',
       '@typescript-eslint/no-use-before-define': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'off',
     },
   };

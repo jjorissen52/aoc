@@ -96,11 +96,29 @@ const run = (
   );
 };
 
-export const DijkstraRunner = new CodeRunner((input: string, ...auxInput) => {
-  const transform = (props: ReturnType<typeof input_to_grid>) => props;
+export const DijkstraRunner = new CodeRunner(
+  (input: string, ...auxInput) => {
+    const transform = (props: ReturnType<typeof input_to_grid>) => props;
 
-  return run(transform, input, ...auxInput);
-});
+    return run(transform, input, ...auxInput);
+  },
+  2021,
+  {
+    day: 15,
+    title: "Dijkstra's",
+    file: "dijkstra",
+    auxInputs: [
+      {
+        name: "Scale",
+        default: "14",
+      },
+      {
+        name: "Font",
+        default: "14",
+      },
+    ],
+  }
+);
 
 export const BigDijkstraRunner = new CodeRunner(
   (input: string, ...auxInput) => {
@@ -148,5 +166,21 @@ export const BigDijkstraRunner = new CodeRunner(
     };
 
     return run(transform, input, ...auxInput);
+  },
+  2021,
+  {
+    day: 15,
+    title: "Big Dijkstra's",
+    file: "dijkstra",
+    auxInputs: [
+      {
+        name: "Scale",
+        default: "14",
+      },
+      {
+        name: "Font",
+        default: "14",
+      },
+    ],
   }
 );

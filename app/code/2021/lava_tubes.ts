@@ -81,17 +81,33 @@ const build_basin = (input: string): Basin => {
   return new Basin(rows, cols, numbers);
 };
 
-export const LavaRiskRunner = new CodeRunner((input: string) => {
-  const basin = build_basin(input);
-  return String(basin.compute_risks());
-});
+export const LavaRiskRunner = new CodeRunner(
+  (input: string) => {
+    const basin = build_basin(input);
+    return String(basin.compute_risks());
+  },
+  2021,
+  {
+    day: 9,
+    title: "Lava Risk",
+    file: "lava_tubes",
+  }
+);
 
-export const LavaBasinRunner = new CodeRunner((input: string) => {
-  const basin = build_basin(input);
-  basin.compute_risks();
-  const largest_basins = basin.lows
-    .map((coord) => basin.compute_basin_area(basin.idx(coord.row, coord.col)))
-    .sort((a, b) => (a > b ? -1 : 1))
-    .slice(0, 3);
-  return String(largest_basins.reduce((total, area) => total * area, 1));
-});
+export const LavaBasinRunner = new CodeRunner(
+  (input: string) => {
+    const basin = build_basin(input);
+    basin.compute_risks();
+    const largest_basins = basin.lows
+      .map((coord) => basin.compute_basin_area(basin.idx(coord.row, coord.col)))
+      .sort((a, b) => (a > b ? -1 : 1))
+      .slice(0, 3);
+    return String(largest_basins.reduce((total, area) => total * area, 1));
+  },
+  2021,
+  {
+    day: 9,
+    title: "Lava Basins",
+    file: "lava_tubes",
+  }
+);

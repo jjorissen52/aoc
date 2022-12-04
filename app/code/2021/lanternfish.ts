@@ -56,23 +56,41 @@ const fast_simulation = (days = 0) => {
   };
 };
 
-export const SlowLanternFish = new CodeRunner((input: string, ...auxInput) => {
-  const [daysInput] = auxInput;
-  const _days = parseInt(daysInput);
-  const days = isNaN(_days) || _days > 80 ? 80 : _days;
-  const as_numbers = input
-    .split(",")
-    .map((n) => parseInt(n))
-    .filter((v) => !isNaN(v));
-  return String(slow_simulation(days)(as_numbers));
-});
+export const SlowLanternFish = new CodeRunner(
+  (input: string, ...auxInput) => {
+    const [daysInput] = auxInput;
+    const _days = parseInt(daysInput);
+    const days = isNaN(_days) || _days > 80 ? 80 : _days;
+    const as_numbers = input
+      .split(",")
+      .map((n) => parseInt(n))
+      .filter((v) => !isNaN(v));
+    return String(slow_simulation(days)(as_numbers));
+  },
+  2021,
+  {
+    day: 6,
+    title: "Lantern Fish",
+    file: "lanternfish",
+    auxInputs: [{ name: "Days", default: "80" }],
+  }
+);
 
-export const FastLanternFish = new CodeRunner((input: string, ...auxInput) => {
-  const [daysInput] = auxInput;
-  const days = isNaN(parseInt(daysInput)) ? 256 : parseInt(daysInput);
-  const as_numbers = input
-    .split(",")
-    .map((n) => parseInt(n))
-    .filter((v) => !isNaN(v));
-  return String(fast_simulation(days)(as_numbers));
-});
+export const FastLanternFish = new CodeRunner(
+  (input: string, ...auxInput) => {
+    const [daysInput] = auxInput;
+    const days = isNaN(parseInt(daysInput)) ? 256 : parseInt(daysInput);
+    const as_numbers = input
+      .split(",")
+      .map((n) => parseInt(n))
+      .filter((v) => !isNaN(v));
+    return String(fast_simulation(days)(as_numbers));
+  },
+  2021,
+  {
+    day: 6,
+    title: "Fast Lantern Fish",
+    file: "lanternfish",
+    auxInputs: [{ name: "Days", default: "256" }],
+  }
+);

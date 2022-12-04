@@ -1,14 +1,19 @@
 import { readAll } from "~/utils/file.server";
-import { RunnerOption } from "~/@types/global";
+import { RUNNER_MAP } from "~/code/code_runner";
+import { LoaderArgs } from "@remix-run/node";
+import { CodeFrameProps } from "~/components/CodeFrame";
+import { atoi } from "~/utils/misc";
 
 export const yearLoader =
-  (year: string | number, runners: RunnerOption[]) => async () => {
+  () =>
+  async ({ request }: LoaderArgs): Promise<Omit<CodeFrameProps, "runners">> => {
+    const year = atoi(request.url.match(/(\d{4})\/?$/)?.[1] ?? "2021");
     const readResults = await readAll(
-      ...runners.map((r) => `/${year}/${r.file}.ts`)
+      ...(RUNNER_MAP[year].map((r) => `/${year}/${r.file}.ts`) ?? [])
     );
     const code = readResults.reduce((accum, { contents }, idx) => {
-      accum[runners[idx].title] = contents;
+      accum[RUNNER_MAP[year][idx].title] = contents;
       return accum;
     }, {} as Record<string, string>);
-    return { code };
+    return { year, code };
   };

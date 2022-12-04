@@ -94,10 +94,26 @@ const to_pairs = (input: string): Pair[] =>
         [new Point(p1x, p1y), new Point(p2x, p2y)] as Pair
     );
 
-export const HydroThermal = new CodeRunner((input) => {
-  return String(multiple_overlap(to_pairs(input)));
-});
+export const HydroThermal = new CodeRunner(
+  (input) => {
+    return String(multiple_overlap(to_pairs(input)));
+  },
+  2021,
+  {
+    day: 5,
+    title: "Hydro Thermal",
+    file: "hydrothermal",
+  }
+);
 
-export const MoreHydroThermal = new CodeRunner((input) => {
-  return String(multiple_overlap(to_pairs(input), true));
-});
+export const MoreHydroThermal = new CodeRunner(
+  (input) => {
+    return String(multiple_overlap(to_pairs(input), true));
+  },
+  2021,
+  {
+    day: 5,
+    title: "More Hydro Thermal",
+    file: "hydrothermal",
+  }
+);
