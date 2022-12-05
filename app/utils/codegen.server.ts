@@ -2,19 +2,17 @@ import { listCodeFiles } from "~/utils/file.server";
 import { template } from "lodash";
 import { readFileSync, writeFileSync } from "fs";
 
-const TEMPLATE = `/* THIS FILE IS AUTO-GENERATED, do not not modify its contents.
-  These below exports and window attachment are necessary for the
-  code runners to be "registered" and available. */
+const TEMPLATE = `\
+/* THIS FILE IS AUTO-GENERATED, do not modify its contents.
+ * These below exports and window attachment are necessary for the
+ * code runners to be "registered" and available. */
+<% _.forEach(years, function(year) { %><% print(year) %><% }); %>`;
 
-<% _.forEach(years, function(year) { %><% print(year) %><% }); %>
-`;
-
-const YEAR_TEMPLATE = `\
+const YEAR_TEMPLATE = `
 // CODE YEAR <%= year %>
-<% _.forEach(exports, function(_export) { %><% print(_export) %><% }); %>
-`;
+<% _.forEach(exports, function(_export) { %><% print(_export) %><% }); %>`;
 
-const EXPORT_TEMPLATE = `export * as <%= file %> from './<%= year %>/<%= file %>'\n`;
+const EXPORT_TEMPLATE = `export * as <%= file %> from "./<%= year %>/<%= file %>";\n`;
 
 export function generateCodeRunnerExports(location: string): boolean {
   const codeFiles = listCodeFiles();

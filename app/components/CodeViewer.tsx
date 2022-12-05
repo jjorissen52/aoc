@@ -1,21 +1,24 @@
 import React from "react";
 import { Box, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import CodeIcon from "@mui/icons-material/Code";
-import CreateIcon from "@mui/icons-material/Create";
-import ImageIcon from "@mui/icons-material/Image";
+import HtmlIcon from "@mui/icons-material/Html";
+import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { Column, Flex } from "~/components/Semantic";
 import { SolutionDisplay } from "~/code/code_runner";
 import { useLocalStorage } from "~/utils/hooks";
+import { AOCFrame } from "~/components/AOCFrame";
 
 export const CodeViewer: React.FunctionComponent<{
   code?: string;
   solution?: SolutionDisplay;
   className?: string;
-}> = ({ code, solution, className }) => {
+  year: number;
+  day: number;
+}> = ({ code, solution, year, day, className }) => {
   const [displayMode, setDisplayMode] = useLocalStorage<
-    "code" | "html" | "string"
+    "code" | "html" | "string" | "aoc"
   >("display-mode", "string");
   const solutionWithNewlines = () =>
     String(solution ?? "...").replace(/\n/g, "<br>");
@@ -24,39 +27,57 @@ export const CodeViewer: React.FunctionComponent<{
       ? solution?.toHTML
         ? solution.toHTML()
         : solutionWithNewlines()
-      : solutionWithNewlines();
+      : displayMode === "string"
+      ? solutionWithNewlines()
+      : "";
   return (
     <Column
       className={className}
-      sx={{ fontFamily: "monospace", position: "relative" }}
+      sx={{ fontFamily: "monospace", position: "relative", overflow: "hidden" }}
     >
       <Flex justifyContent={"right"}>
         <ToggleButtonGroup
           size="small"
           exclusive
-          value={displayMode}
+          value={displayMode ?? undefined}
           onChange={(ev, mode) => setDisplayMode(mode)}
-          sx={{ position: "absolute", bottom: 5, right: 5 }}
+          sx={(theme) => ({
+            position: "absolute",
+            zIndex: 1000,
+            bottom: theme.spacing(1),
+            right: theme.spacing(1),
+            backgroundColor: "background.default",
+          })}
         >
           <ToggleButton value={"string"} aria-label={"string"}>
-            <CreateIcon />
+            <TextSnippetIcon />
           </ToggleButton>
           <ToggleButton value={"html"} aria-label={"html"}>
-            <ImageIcon />
+            <HtmlIcon />
           </ToggleButton>
           <ToggleButton value={"code"} aria-label={"code"}>
             <CodeIcon />
           </ToggleButton>
+          <ToggleButton value={"aoc"} aria-label={"aoc"}>
+            <img
+              src="/aoc_star.png"
+              style={{ width: "25px" }}
+              alt={"Advent of Code Star"}
+            />
+          </ToggleButton>
         </ToggleButtonGroup>
       </Flex>
-      {displayMode !== "code" && (
-        <Box dangerouslySetInnerHTML={{ __html: htmlOutput }} />
-      )}
-      {displayMode === "code" && (
-        <SyntaxHighlighter language="typescript" style={materialDark}>
-          {code ? code : "// No runner found."}
-        </SyntaxHighlighter>
-      )}
+      <div style={{ width: "100%", height: "100%", overflow: "auto" }}>
+        {["code", "html"].includes(displayMode) && (
+          <Box dangerouslySetInnerHTML={{ __html: htmlOutput }} />
+        )}
+        {displayMode === "code" && (
+          <SyntaxHighlighter language="typescript" style={materialDark}>
+            {code ? code : "// No runner found."}
+          </SyntaxHighlighter>
+        )}
+        {displayMode === "aoc" && <AOCFrame year={year} day={day} />}
+      </div>
     </Column>
   );
 };

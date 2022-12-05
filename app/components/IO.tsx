@@ -16,13 +16,11 @@ import {
   SolutionOutput,
 } from "~/code/code_runner";
 
-import * as y21 from "~/code/2021";
-import * as y22 from "~/code/2022";
+import * as initCode from "~/code/init";
 import { attachToWindow } from "~/utils/window";
 
 attachToWindow({
-  y21,
-  y22,
+  initCode,
 });
 
 export type RunnerOption = {
@@ -144,6 +142,9 @@ export const IO: React.FunctionComponent<IOProps> = ({
           label="Input"
           placeholder="Input"
           variant={"filled"}
+          multiline
+          minRows={4}
+          maxRows={4}
           value={input}
           onChange={_onChangeInput}
           InputProps={{

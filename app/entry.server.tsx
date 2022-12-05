@@ -27,8 +27,11 @@ export default function handleRequest(
   try {
     const watcher = watch(appPath("code"), { recursive: true });
     for await (const event of watcher) {
-      if (!event.filename.endsWith("init.ts"))
-        console.log(generateCodeRunnerExports(appPath("code", "init.ts")));
+      if (
+        !event.filename.endsWith("init.ts") &&
+        generateCodeRunnerExports(appPath("code", "init.ts"))
+      )
+        console.log("Regenerated code exports");
     }
   } catch (err) {
     // @ts-ignore
