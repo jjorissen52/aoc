@@ -22,6 +22,7 @@ export const CodeViewer: React.FunctionComponent<{
   >("display-mode", "string");
   const solutionWithNewlines = () =>
     String(solution ?? "...").replace(/\n/g, "<br>");
+
   const htmlOutput =
     displayMode === "html"
       ? solution?.toHTML
@@ -30,6 +31,7 @@ export const CodeViewer: React.FunctionComponent<{
       : displayMode === "string"
       ? solutionWithNewlines()
       : "";
+
   return (
     <Column
       className={className}
@@ -76,7 +78,7 @@ export const CodeViewer: React.FunctionComponent<{
             {code ? code : "// No runner found."}
           </SyntaxHighlighter>
         )}
-        {displayMode === "aoc" && <AOCFrame year={year} day={day} />}
+        {displayMode === "aoc" && <AOCFrame url={`/${year}/day/${day}`} />}
       </div>
     </Column>
   );

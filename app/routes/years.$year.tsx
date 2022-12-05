@@ -19,6 +19,7 @@ import StartIcon from "@mui/icons-material/Start";
 export default function Default() {
   const { years, year, code } = useLoaderData() as LoaderProps;
   const [day, setDay] = useState(0);
+  const title = `Advent of Code | ${year} - Day ${day || ". . ."}`;
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -33,7 +34,7 @@ export default function Default() {
           }}
         >
           <Typography variant="h6" noWrap component="div">
-            Advent of Code | {year}
+            {title}
           </Typography>
           <div>
             <IconButton

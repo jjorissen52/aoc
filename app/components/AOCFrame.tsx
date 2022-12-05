@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 
 export type AOCProps = {
-  day: number;
-  year: number;
+  url: string;
 };
 
-export function AOCFrame({ year, day }: AOCProps) {
+export function AOCFrame({ url }: AOCProps) {
   useEffect(() => {
-    fetch(`http://localhost:3002/aoc/${year}/${day}`, {
+    const origin = new URL(window.location.href).origin;
+    fetch(`${origin}/aoc${url}`, {
       method: "GET",
     }).then((res) => {
       res.blob().then((blob) => {
@@ -17,7 +17,7 @@ export function AOCFrame({ year, day }: AOCProps) {
         document.querySelector("#aoc-frame")!.setAttribute("src", urlObject);
       });
     });
-  }, [year, day]);
+  }, [url]);
   return (
     <iframe
       id="aoc-frame"

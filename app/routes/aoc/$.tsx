@@ -1,11 +1,16 @@
-import { AOCProps } from "~/components/AOCFrame";
 import { JSDOM } from "jsdom";
 
 const SESSION_ID = process.env.AOC_SESSION_ID;
 
-export async function loader({ params }: { params: AOCProps }) {
-  const { year, day } = params;
-  const res = await fetch(`https://adventofcode.com/${year}/day/${day}`, {
+export async function loader({
+  request,
+  params,
+}: {
+  request: Request;
+  params: { "*": string };
+}) {
+  const path = params["*"];
+  const res = await fetch(`https://adventofcode.com/${path}`, {
     method: "GET",
     headers: SESSION_ID
       ? {
@@ -22,6 +27,19 @@ export async function loader({ params }: { params: AOCProps }) {
   Array.from(document.querySelectorAll("link")).forEach((link) => {
     if (link.href.match(/\/[^\/]/))
       link.href = `https://adventofcode.com/${link.href}`;
+  });
+
+  // inject our own links to keep navigation within the iframe
+  Array.from(document.querySelectorAll("a")).forEach((link) => {
+    const match = link.href.match(/^\/(.*)/);
+    if (match) {
+      link.href = `${new URL(request.url).origin}/aoc/${match[1]}`;
+    } else {
+      const { origin, pathname } = new URL(request.url);
+      link.href = `${origin}${pathname.replace(/\/([^\/]+)$/, "")}/${
+        link.href
+      }`;
+    }
   });
 
   // remove sidebar because we don't need it

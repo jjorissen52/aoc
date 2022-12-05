@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { JSONValue } from "~/@types/global";
 
 const get = <T>(key: string, defaultValue: T): T => {
   try {

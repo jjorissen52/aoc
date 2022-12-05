@@ -6,6 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import DownloadIcon from "@mui/icons-material/Download";
 import TextField from "@mui/material/TextField";
 import { Column } from "~/components/Semantic";
 import { useLocalStorage } from "~/utils/hooks";
@@ -18,6 +19,7 @@ import {
 
 import * as initCode from "~/code/init";
 import { attachToWindow } from "~/utils/window";
+import { IconButton } from "@mui/material";
 
 attachToWindow({
   initCode,
@@ -67,6 +69,7 @@ export const IO: React.FunctionComponent<IOProps> = ({
     runners.filter((r) => r.day === storedState.day).map((r) => r.title)
   );
 
+  const [fetchingInput, setFetchingInput] = React.useState(false);
   const [output, setOutput] = React.useState<SolutionDisplay>(_("..."));
   const [state, setState] = React.useReducer(
     (oldState: State, newState: Partial<State>) => ({
@@ -137,22 +140,48 @@ export const IO: React.FunctionComponent<IOProps> = ({
       className={className}
     >
       <Box>
-        <TextField
-          sx={{ width: "100%" }}
-          label="Input"
-          placeholder="Input"
-          variant={"filled"}
-          multiline
-          minRows={4}
-          maxRows={4}
-          value={input}
-          onChange={_onChangeInput}
-          InputProps={{
-            style: {
-              fontFamily: "Roboto Mono, monospace",
-            },
-          }}
-        />
+        <Box sx={{ position: "relative" }}>
+          <TextField
+            sx={{ width: "100%" }}
+            label="Input"
+            placeholder="Input"
+            variant={"filled"}
+            multiline
+            minRows={4}
+            maxRows={4}
+            value={input}
+            onChange={_onChangeInput}
+            InputProps={{
+              style: {
+                fontFamily: "Roboto Mono, monospace",
+              },
+            }}
+          />
+          <IconButton
+            color="primary"
+            disabled={fetchingInput}
+            sx={(theme) => ({
+              position: "absolute",
+              top: theme.spacing(1),
+              right: theme.spacing(input ? 4 : 1),
+            })}
+            onClick={() => {
+              setFetchingInput(true);
+              fetch(`/aoc/${year}/day/${day}/input`)
+                .then((res) => {
+                  setFetchingInput(false);
+                  if (res.status === 200)
+                    res.text().then((input) => setState({ input }));
+                })
+                .catch((e) => {
+                  setFetchingInput(false);
+                  console.error(e);
+                });
+            }}
+          >
+            <DownloadIcon />
+          </IconButton>
+        </Box>
         <TextField
           sx={{ width: "100%" }}
           minRows={25}
