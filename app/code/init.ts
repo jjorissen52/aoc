@@ -1,4 +1,4 @@
-/* THIS FILE IS AUTO-GENERATED, do not not modify its contents.
+/* THIS FILE IS AUTO-GENERATED, do not modify its contents.
  * These below exports and window attachment are necessary for the
  * code runners to be "registered" and available. */
 
@@ -22,5 +22,7 @@ export * as sliding_sonar from "./2021/sliding_sonar";
 export * as sonar from "./2021/sonar";
 export * as syntax from "./2021/syntax";
 export * as util from "./2021/util";
+
 // CODE YEAR 2022
 export * as calorie_counting from "./2022/calorie_counting";
+export * as rock_paper_scissors from "./2022/rock_paper_scissors";
