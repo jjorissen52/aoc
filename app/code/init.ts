@@ -26,3 +26,4 @@ export * as util from "./2021/util";
 // CODE YEAR 2022
 export * as calorie_counting from "./2022/calorie_counting";
 export * as rock_paper_scissors from "./2022/rock_paper_scissors";
+export * as rucksack from "./2022/rucksack";
